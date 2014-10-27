@@ -16,7 +16,7 @@ RUN echo "deb http://http.kali.org/kali kali main contrib non-free" > /etc/apt/s
  && gem install wirble sqlite3 bundler \
  && mkdir /pentest
 
-RUN echo "host	msf		msf	127.0.0.1/32	trust" >> /etc/postgresql/9.1/main/pg_hba.conf \
+RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.1/main/pg_hba.conf \
  && /etc/init.d/postgresql start \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
@@ -32,7 +32,7 @@ RUN git clone --depth 0 https://github.com/rapid7/metasploit-framework.git /pent
  && echo " database: msf" >> $MSF_DATABASE_CONFIG \
  && echo " username: msf" >> $MSF_DATABASE_CONFIG \
  && echo " password:" >> $MSF_DATABASE_CONFIG \
- && echo " host: localhost" >> $MSF_DATABASE_CONFIG \
+ && echo " host: 127.0.0.1" >> $MSF_DATABASE_CONFIG \
  && echo " port: 5432" >> $MSF_DATABASE_CONFIG \
  && echo " pool: 75" >> $MSF_DATABASE_CONFIG \
  && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
