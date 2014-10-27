@@ -16,7 +16,8 @@ RUN echo "deb http://http.kali.org/kali kali main contrib non-free" > /etc/apt/s
  && gem install wirble sqlite3 bundler \
  && mkdir /pentest
 
-RUN /etc/init.d/postgresql start \
+RUN echo "host	msf		msf	127.0.0.1/32	trust" >> /etc/postgresql/9.1/main/pg_hba.conf \
+ && /etc/init.d/postgresql start \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
 
