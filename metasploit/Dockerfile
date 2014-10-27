@@ -21,7 +21,8 @@ RUN apt-get update \
  && echo " host: postgres" >> /pentest/metasploit-framework/config/database.yml \
  && echo " port: 5432" >> /pentest/metasploit-framework/config/database.yml \
  && echo " pool: 75" >> /pentest/metasploit-framework/config/database.yml \
- && echo " timeout: 5" >> /pentest/metasploit-framework/config/database.yml
+ && echo " timeout: 5" >> /pentest/metasploit-framework/config/database.yml \
+ && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb > /pentest/metasploit-framework/plugins/pentest.rb
 
 env MSF_DATABASE_CONFIG /pentest/metasploit-framework/config/database.yml
 
