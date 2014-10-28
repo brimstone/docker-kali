@@ -17,7 +17,7 @@ RUN echo "deb http://http.kali.org/kali kali main contrib non-free" \
     libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev vncviewer libyaml-dev ruby1.9.3 ruby-dev nmap beef-xss \
-    mitmproxy postgresql \
+    mitmproxy postgresql python-pefile capstone \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists \
 
@@ -51,8 +51,9 @@ RUN git clone --depth 0 https://github.com/rapid7/metasploit-framework.git \
 
 RUN git clone --recursive https://github.com/secretsquirrel/BDFProxy.git \
     /pentest/bdfproxy \
- && cd /pentest/bdfproxy \
- && git submodule foreach git pull origin master
+ && cd /pentest/bdfproxy/bdf \
+ && git pull origin master \
+ && ./install.sh
 
 ADD loader /
  
