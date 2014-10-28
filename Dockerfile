@@ -1,15 +1,23 @@
 FROM debian:wheezy
 
-RUN echo "deb http://http.kali.org/kali kali main contrib non-free" > /etc/apt/sources.list.d/kali.list \
- && echo "deb-src http://http.kali.org/kali kali main contrib non-free" >> /etc/apt/sources.list.d/kali.list \
- && echo "deb http://security.kali.org/kali-security kali/updates main contrib non-free" >> /etc/apt/sources.list.d/kali.list \
- && echo "deb-src http://security.kali.org/kali-security kali/updates main contrib non-free" >> /etc/apt/sources.list.d/kali.list \
+RUN echo "deb http://http.kali.org/kali kali main contrib non-free" \
+    > /etc/apt/sources.list.d/kali.list \
+ && echo "deb-src http://http.kali.org/kali kali main contrib non-free" \
+    >> /etc/apt/sources.list.d/kali.list \
+ && echo "deb http://security.kali.org/kali-security kali/updates main contrib non-free" \
+    >> /etc/apt/sources.list.d/kali.list \
+ && echo "deb-src http://security.kali.org/kali-security kali/updates main contrib non-free" \
+    >> /etc/apt/sources.list.d/kali.list \
  && apt-key adv --keyserver pgp.mit.edu --recv-keys ED444FF07D8D0BF6 \
 
  && apt-get update \
  && apt-get -y dist-upgrade \
 
- && apt-get install -y vim build-essential libreadline-dev libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev ruby1.9.3 ruby-dev nmap beef-xss mitmproxy postgresql \
+ && apt-get install -y vim build-essential libreadline-dev libssl-dev libpq5 \
+    libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre \
+    subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
+    libxslt1-dev vncviewer libyaml-dev ruby1.9.3 ruby-dev nmap beef-xss \
+    mitmproxy postgresql \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists \
 
@@ -23,10 +31,12 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.1/main/pg_hba.conf \
 
 env MSF_DATABASE_CONFIG /pentest/metasploit-framework/config/database.yml
 
-RUN git clone --depth 0 https://github.com/rapid7/metasploit-framework.git /pentest/metasploit-framework \
+RUN git clone --depth 0 https://github.com/rapid7/metasploit-framework.git \
+    /pentest/metasploit-framework \
  && cd /pentest/metasploit-framework \
  && bundle install \
- && for MSF in $(ls msf*); do ln -s /pentest/metasploit-framework/$MSF /usr/local/bin/$MSF;done \
+ && for MSF in $(ls msf*); do ln -s /pentest/metasploit-framework/$MSF \
+    /usr/local/bin/$MSF;done \
  && echo "production:" > $MSF_DATABASE_CONFIG \
  && echo " adapter: postgresql" >> $MSF_DATABASE_CONFIG \
  && echo " database: msf" >> $MSF_DATABASE_CONFIG \
@@ -36,11 +46,15 @@ RUN git clone --depth 0 https://github.com/rapid7/metasploit-framework.git /pent
  && echo " port: 5432" >> $MSF_DATABASE_CONFIG \
  && echo " pool: 75" >> $MSF_DATABASE_CONFIG \
  && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
- && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb > /pentest/metasploit-framework/plugins/pentest.rb
+ && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
+    > /pentest/metasploit-framework/plugins/pentest.rb
 
-RUN git clone --recursive https://github.com/secretsquirrel/BDFProxy.git /pentest/bdfproxy \
+RUN git clone --recursive https://github.com/secretsquirrel/BDFProxy.git \
+    /pentest/bdfproxy \
  && cd /pentest/bdfproxy \
  && git submodule foreach git pull origin master
+
+ADD loader /
  
-CMD ["msfconsole"]
+CMD ["/loader"]
 WORKDIR /pentest
