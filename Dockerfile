@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 
 RUN echo "deb http://http.kali.org/kali kali main contrib non-free" \
     > /etc/apt/sources.list.d/kali.list \
@@ -10,28 +10,28 @@ RUN echo "deb http://http.kali.org/kali kali main contrib non-free" \
     >> /etc/apt/sources.list.d/kali.list \
  && apt-key adv --keyserver pgp.mit.edu --recv-keys ED444FF07D8D0BF6 \
 
- && apt-get update \
- && apt-get -y dist-upgrade \
+ && apt-get update
 
- && apt-get install -y vim build-essential libreadline-dev libssl-dev libpq5 \
+RUN apt-get install -y --no-install-recommends \
+    vim build-essential libreadline-dev libssl-dev libpq5 \
     libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
-    libxslt1-dev vncviewer libyaml-dev ruby1.9.3 ruby-dev nmap beef-xss \
-    mitmproxy postgresql python-pefile capstone \
+    libxslt1-dev vncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
+    mitmproxy postgresql python-pefile \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists \
 
  && gem install wirble sqlite3 bundler \
  && mkdir /pentest
 
-RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.1/main/pg_hba.conf \
+RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.4/main/pg_hba.conf \
  && /etc/init.d/postgresql start \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
 
 env MSF_DATABASE_CONFIG /pentest/metasploit-framework/config/database.yml
 
-RUN git clone --depth 0 https://github.com/rapid7/metasploit-framework.git \
+RUN git clone --depth 1 https://github.com/rapid7/metasploit-framework.git \
     /pentest/metasploit-framework \
  && cd /pentest/metasploit-framework \
  && bundle install \
