@@ -18,6 +18,7 @@ RUN apt-get install -y --no-install-recommends \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev vncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
+    sqlmap zaproxy burpsuite \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists \
 
