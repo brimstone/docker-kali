@@ -14,11 +14,11 @@ RUN apt-get install -y --no-install-recommends \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev vncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
-    sqlmap zaproxy burpsuite \
+    sqlmap zaproxy burpsuite bettercap bdfproxy \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists \
 
- && gem install wirble sqlite3 bundler bettercap \
+ && gem install wirble sqlite3 bundler \
  && mkdir /pentest
 
 RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.6/main/pg_hba.conf \
@@ -46,13 +46,7 @@ RUN git clone --depth 1 https://github.com/rapid7/metasploit-framework.git \
  && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
     > /pentest/metasploit-framework/plugins/pentest.rb
 
-RUN git clone --recursive https://github.com/secretsquirrel/BDFProxy.git \
-    /pentest/bdfproxy \
- && cd /pentest/bdfproxy/bdf \
- && git pull origin master \
- && ./install.sh
-
 ADD loader /
- 
+
 CMD ["/loader"]
 WORKDIR /pentest
