@@ -1,0 +1,4 @@
+#!/bin/bash
+service postgresql start
+msfrpcd -S -U msf -P test
+exec java -jar /pentest/armitage/armitage.jar

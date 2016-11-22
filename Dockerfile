@@ -38,13 +38,17 @@ RUN git clone --depth 1 https://github.com/rapid7/metasploit-framework.git \
  && echo " adapter: postgresql" >> $MSF_DATABASE_CONFIG \
  && echo " database: msf" >> $MSF_DATABASE_CONFIG \
  && echo " username: msf" >> $MSF_DATABASE_CONFIG \
- && echo " password:" >> $MSF_DATABASE_CONFIG \
+ && echo " password: msf" >> $MSF_DATABASE_CONFIG \
  && echo " host: 127.0.0.1" >> $MSF_DATABASE_CONFIG \
  && echo " port: 5432" >> $MSF_DATABASE_CONFIG \
  && echo " pool: 75" >> $MSF_DATABASE_CONFIG \
  && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
  && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
     > /pentest/metasploit-framework/plugins/pentest.rb
+RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
+  | tar -zxC /pentest/
+
+ADD armitage /bin
 
 ADD loader /
 
