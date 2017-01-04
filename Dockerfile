@@ -1,8 +1,7 @@
 FROM debian:jessie
 
-ENV LHOST=
-
-ENV MSF_DATABASE_CONFIG /usr/share/metasploit-framework/config/database.yml
+ENV LHOST= \
+    MSF_DATABASE_CONFIG=/usr/share/metasploit-framework/config/database.yml
 
 COPY pax-pre-install /usr/local/sbin/pax-pre-install
 
@@ -17,14 +16,20 @@ RUN /usr/local/sbin/pax-pre-install --install \
 
  && apt install -y --no-install-recommends \
     less vim build-essential libreadline-dev libssl-dev libpq5 \
-    libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-8-jre \
+    libpq-dev libreadline5 libsqlite3-dev libpcap-dev \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
-    sqlmap zaproxy burpsuite bettercap bdfproxy exploitdb rsync \
-	metasploit-framework \
+    sqlmap bettercap bdfproxy rsync \
+ && rm -rf /var/lib/apt/lists
 
- && gem install wirble sqlite3 bundler \
+# I'm trying to split up this layer so it's more palatable to download
+RUN apt update \
+ && apt install -y --no-install-recommends \
+	burpsuite openjdk-8-jre zaproxy exploitdb \
+ && rm -rf /var/lib/apt/lists
+
+RUN gem install wirble sqlite3 bundler \
  && mkdir /pentest
 
 RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.6/main/pg_hba.conf \
@@ -32,7 +37,13 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.6/main/pg_hba.conf \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
 
-RUN version="$(awk -F \" '/VERSION/ {print $2; exit}' /usr/share/metasploit-framework/lib/metasploit/framework/version.rb)" \
+# Update metasploit the hard way
+# There's something dumb about what the package does to work with system ruby
+RUN apt update \
+ && apt install -y --no-install-recommends \
+	metasploit-framework \
+ && rm -rf /var/lib/apt/lists \
+ && version="$(msfconsole -v 2>&1 | sed 's/^.*: //g;s/-.*$//')" \
  && git clone -b "$version" https://github.com/rapid7/metasploit-framework.git \
     /pentest/metasploit-framework \
  && rsync -a /usr/share/metasploit-framework/ /pentest/metasploit-framework/ \
