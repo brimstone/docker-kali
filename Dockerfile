@@ -2,23 +2,27 @@ FROM debian:jessie
 
 ENV LHOST=
 
-RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
+ENV MSF_DATABASE_CONFIG /usr/share/metasploit-framework/config/database.yml
+
+COPY pax-pre-install /usr/local/sbin/pax-pre-install
+
+RUN /usr/local/sbin/pax-pre-install --install \
+ && echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     > /etc/apt/sources.list.d/kali.list \
  && echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" \
     >> /etc/apt/sources.list.d/kali.list \
  && apt-key adv --keyserver pgp.mit.edu --recv-keys ED444FF07D8D0BF6 \
 
- && apt-get update \
+ && apt update \
 
- && apt-get install -y --no-install-recommends \
+ && apt install -y --no-install-recommends \
     less vim build-essential libreadline-dev libssl-dev libpq5 \
     libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-8-jre \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
-    sqlmap zaproxy burpsuite bettercap bdfproxy exploitdb \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists \
+    sqlmap zaproxy burpsuite bettercap bdfproxy exploitdb rsync \
+	metasploit-framework \
 
  && gem install wirble sqlite3 bundler \
  && mkdir /pentest
@@ -28,14 +32,22 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.6/main/pg_hba.conf \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
 
-env MSF_DATABASE_CONFIG /pentest/metasploit-framework/config/database.yml
-
-RUN git clone --depth 1 https://github.com/rapid7/metasploit-framework.git \
+RUN version="$(awk -F \" '/VERSION/ {print $2; exit}' /usr/share/metasploit-framework/lib/metasploit/framework/version.rb)" \
+ && git clone -b "$version" https://github.com/rapid7/metasploit-framework.git \
     /pentest/metasploit-framework \
- && cd /pentest/metasploit-framework \
+ && rsync -a /usr/share/metasploit-framework/ /pentest/metasploit-framework/ \
+ && rm -rf /usr/share/metasploit-framework \
+ && mv /pentest/metasploit-framework /usr/share/metasploit-framework \
+ && ln -s /usr/share/metasploit-framework /pentest \
+ && cd /usr/share/metasploit-framework \
+ && git config --global user.email "you@example.com" \
+ && git config --global user.name "Your Name" \
+ && git stash \
+ && git checkout master \
+ && git stash pop \
  && bundle install \
- && for MSF in $(ls msf*); do ln -s /pentest/metasploit-framework/$MSF \
-    /usr/local/bin/$MSF;done \
+ && echo "Saving $(du -hs .git) by removing .git" \
+ && rm -rf .git \
  && echo "production:" > $MSF_DATABASE_CONFIG \
  && echo " adapter: postgresql" >> $MSF_DATABASE_CONFIG \
  && echo " database: msf" >> $MSF_DATABASE_CONFIG \
@@ -47,6 +59,7 @@ RUN git clone --depth 1 https://github.com/rapid7/metasploit-framework.git \
  && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
  && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
     > /pentest/metasploit-framework/plugins/pentest.rb
+
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
