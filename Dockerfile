@@ -1,9 +1,20 @@
 FROM debian:jessie
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG DEPENDENCY_BUSTER
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/brimstone/docker-kali" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0.0-rc1"
+
 ENV LHOST= \
     MSF_DATABASE_CONFIG=/usr/share/metasploit-framework/config/database.yml
 
 COPY pax-pre-install /usr/local/sbin/pax-pre-install
+
+RUN echo $DEPENDENCY_BUSTER > /dev/null
 
 RUN /usr/local/sbin/pax-pre-install --install \
  && echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
