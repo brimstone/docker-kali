@@ -89,5 +89,5 @@ ADD armitage /bin
 
 ADD loader /
 
-CMD ["/loader"]
+ENTRYPOINT ["/loader"]
 WORKDIR /pentest
