@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 
 ARG BUILD_DATE
 ARG VCS_REF

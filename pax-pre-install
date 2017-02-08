@@ -24,7 +24,7 @@ if [ "$1" = "--install" ]; then
 		exit
 	fi
 	apt update
-	apt install -y --no-install-recommends paxctl
+	apt install -y --no-install-recommends paxctl gnupg dirmngr
 	apt-get clean
 	exit
 fi
