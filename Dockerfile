@@ -55,19 +55,20 @@ RUN apt update \
 	metasploit-framework \
  && rm -rf /var/lib/apt/lists \
  && version="$(msfconsole -v 2>&1 | sed 's/^.*: //g;s/-.*$//')" \
+ && echo "Checking out metasploit-framework version $version" \
  && git clone -b "$version" https://github.com/rapid7/metasploit-framework.git \
     /pentest/metasploit-framework \
- && rsync -a /usr/share/metasploit-framework/ /pentest/metasploit-framework/ \
- && rm -rf /usr/share/metasploit-framework \
- && mv /pentest/metasploit-framework /usr/share/metasploit-framework \
- && ln -s /usr/share/metasploit-framework /pentest \
- && cd /usr/share/metasploit-framework \
+ && mv /pentest/metasploit-framework/.git /usr/share/metasploit-framework/ \
+ && rm -rf /pentest/metasploit-framework \
+ && mv /usr/share/metasploit-framework /pentest/metasploit-framework \
+ && ln -s /pentest/metasploit-framework /usr/share/ \
+ && cd /pentest/metasploit-framework \
  && git config --global user.email "you@example.com" \
  && git config --global user.name "Your Name" \
  && git stash \
  && git checkout master \
- && git stash pop \
- && bundle install \
+ && git stash pop || true \
+ && bundle install --no-deployment \
  && echo "Saving $(du -hs .git) by removing .git" \
  && rm -rf .git \
  && echo "production:" > $MSF_DATABASE_CONFIG \
@@ -88,6 +89,8 @@ RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
 ADD armitage /bin
 
 ADD loader /
+
+RUN /loader msf -x 'version;exit' | grep Console
 
 ENTRYPOINT ["/loader"]
 WORKDIR /pentest

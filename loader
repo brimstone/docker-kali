@@ -2,9 +2,11 @@
 if [ -z "$1" ]; then
 	exec bash
 elif [ "$1" = "msf" ] || [ "$1" = "msfconsole" ]; then
+	shift
 	service postgresql start
-	exec msfconsole -x "set -g CHOST 0.0.0.0; set -g LHOST ${LHOST:-0.0.0.0};"
+	exec msfconsole -x "set -g CHOST 0.0.0.0; set -g LHOST ${LHOST:-0.0.0.0};" "$@"
 elif [ "$1" = "msfd" ]; then
+	shift
 	service postgresql start
 	exec msfd -f -a 0.0.0.0 -s "$@"
 fi
