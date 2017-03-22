@@ -68,6 +68,7 @@ RUN apt update \
  && git stash \
  && git checkout master \
  && git stash pop || true \
+ && git checkout HEAD -- Gemfile.lock \
  && bundle install --no-deployment \
  && echo "Saving $(du -hs .git) by removing .git" \
  && rm -rf .git \
