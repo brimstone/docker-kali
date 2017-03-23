@@ -1,5 +1,6 @@
 #!/bin/bash
-if [ -z "$1" ]; then
+set -euo pipefail
+if [ -z "${1:-}" ]; then
 	exec bash
 elif [ "$1" = "msf" ] || [ "$1" = "msfconsole" ]; then
 	shift
@@ -9,5 +10,24 @@ elif [ "$1" = "msfd" ]; then
 	shift
 	service postgresql start
 	exec msfd -f -a 0.0.0.0 -s "$@"
+elif [ "$1" = "cache" ]; then
+	shift
+	if [ "$1" = "build" ]; then
+		shift
+		service postgresql start
+		msfconsole -x '/loader cache watch'
+		service postgresql stop
+	elif [ "$1" = "watch" ]; then
+		shift
+		old=0
+		new=0
+		until [ "$new" -gt 3000 ] && [ "$new" -eq "$old" ]; do
+			old="$new"
+			new="$(psql -U msf -h 127.0.0.1 msf -At -c 'select count(*) from module_details' || echo "0")"
+			echo "Module cache is now: $new"
+			sleep 10
+		done
+		exit
+	fi
 fi
 exec "$@"

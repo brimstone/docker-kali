@@ -91,7 +91,7 @@ ADD armitage /bin
 
 ADD loader /
 
-RUN /loader msf -x 'version;exit' | grep Console
+RUN /loader cache build
 
 ENTRYPOINT ["/loader"]
 WORKDIR /pentest
