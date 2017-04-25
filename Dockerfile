@@ -1,4 +1,4 @@
-FROM hub.c.163.com/public/debian:7.9
+FROM debian:stretch
 
 ARG BUILD_DATE
 ARG VCS_REF
