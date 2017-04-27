@@ -1,4 +1,4 @@
-FROM hub.c.163.com/library/debian:stretch
+FROM debian:stretch
 
 ARG BUILD_DATE
 ARG VCS_REF
