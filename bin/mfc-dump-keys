@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+id="${1?Must supply ID}"
+
+temp="$(mktemp)"
+temp2="$(mktemp)"
+
+trap "rm $temp $temp2" EXIT
+
+# If we don't have any keys currently, then take the slow route to break the
+# first one
+if [ ! -f "$id".keys ] || [ "$(wc -l < "$id".keys)" -lt 1 ]; then
+	mfcuk -C -R 0:A -s 250 -S 250 -v 3 \
+	| tee "$temp"
+
+	# Get our starter key
+	key="$(grep "KEY" "$temp" | sed 's/^.*: //')"
+	if [ -z "$key" ]; then
+		echo "unable to recover sector 0 key a! Cannot continue"
+		exit 1
+	fi
+	echo "$key" > "$id".keys
+fi
+
+while [ "$(wc -l < "$id".keys)" -lt 32 ]; do
+	# attempt to find missing keys
+	mfoc -O "$id.dump" -f "$id".keys | tee "$temp" || true
+
+	# collect old and new keys
+	(
+		grep custom "$temp" \
+		| sed 's/^.*0x//;s/ .*$//;'
+		grep "Found\ Key" "$temp" \
+		| sed 's/^.*\[//;s/].*//'
+	) \
+	> "$temp2"
+
+	# if we have more new keys than old keys
+	if [ "$(wc -l < "$temp2")" -gt "$(wc -l < "$id".keys)" ]; then
+		mv "$temp2" "$id".keys
+	fi
+done

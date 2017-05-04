@@ -31,7 +31,8 @@ RUN /usr/local/sbin/pax-pre-install --install \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
-    sqlmap bettercap bdfproxy rsync enum4linux openssh-client mfoc mfcuk \
+    sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
+	mfoc mfcuk libnfc-bin \
  && rm -rf /var/lib/apt/lists
 
 # I'm trying to split up this layer so it's more palatable to download
@@ -87,7 +88,7 @@ RUN apt update \
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
-ADD armitage /bin
+ADD bin/* /bin/
 
 ADD loader /
 
