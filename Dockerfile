@@ -88,7 +88,7 @@ RUN apt update \
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
-RUN git https://github.com/danielmiessler/SecLists /pentest/seclists --depth 0 \
+RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 0 \
  && rm -rf /pentest/seclists/.git
 
 ADD bin/* /bin/
