@@ -5,8 +5,12 @@ Identify & Enumerate
 --------------------
 
 ### Identify interesting files on the webserver not linked from the root
+
+URL lists:
+- https://github.com/danielmiessler/SecLists/
+
 ```
-gobuster -u http://$IP  -w /usr/share/seclists/Discovery/Web_Content/raft-medium-files.txt -e -r -l
+gobuster -u http://$IP  -w /pentest/seclists/Discovery/Web_Content/raft-medium-files.txt -e -r -l
 ```
 
 ```
