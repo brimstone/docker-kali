@@ -32,7 +32,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
-	mfoc mfcuk libnfc-bin hydra gobuster nikto wpscan \
+	mfoc mfcuk libnfc-bin hydra gobuster nikto wpscan weevely \
  && rm -rf /var/lib/apt/lists
 
 # I'm trying to split up this layer so it's more palatable to download
@@ -88,8 +88,10 @@ RUN apt update \
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
-RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 0 \
+RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git
+
+RUN wpscan --update
 
 ADD bin/* /bin/
 
