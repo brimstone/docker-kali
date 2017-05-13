@@ -35,7 +35,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
 	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely \
  && rm -rf /var/lib/apt/lists \
  && curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
-    -LO /usr/bin/gobuster \
+    -Lo /usr/bin/gobuster \
  && chmod 755 /usr/bin/gobuster
 
 # I'm trying to split up this layer so it's more palatable to download
