@@ -32,8 +32,11 @@ RUN /usr/local/sbin/pax-pre-install --install \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
-	mfoc mfcuk libnfc-bin hydra gobuster nikto wpscan weevely \
- && rm -rf /var/lib/apt/lists
+	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely \
+ && rm -rf /var/lib/apt/lists \
+ && wget https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
+    -O /usr/bin/gobuster \
+ && chmod 755 /usr/bin/gobuster
 
 # I'm trying to split up this layer so it's more palatable to download
 RUN apt update \
