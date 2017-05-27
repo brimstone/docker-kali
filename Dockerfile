@@ -96,9 +96,9 @@ RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --dep
 
 RUN wpscan --update
 
-ADD bin/* /bin/
+COPY bin/* /bin/
 
-ADD loader /
+COPY loader /
 
 RUN /loader cache build
 
