@@ -100,6 +100,8 @@ COPY bin/* /bin/
 
 COPY loader /
 
+COPY lists /pentest/
+
 RUN /loader cache build
 
 ENTRYPOINT ["/loader"]
