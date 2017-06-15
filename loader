@@ -1,20 +1,27 @@
 #!/bin/bash
 set -euo pipefail
+
+db(){
+	service postgresql start
+	until psql -h 127.0.0.1 msf msf -c '\q'; do
+		sleep 2
+	done
+}
 if [ -z "${1:-}" ]; then
 	exec bash
 elif [ "$1" = "msf" ] || [ "$1" = "msfconsole" ]; then
 	shift
-	service postgresql start
+	db
 	exec msfconsole -x "set -g CHOST 0.0.0.0; set -g LHOST ${LHOST:-0.0.0.0};" "$@"
 elif [ "$1" = "msfd" ]; then
 	shift
-	service postgresql start
+	db
 	exec msfd -f -a 0.0.0.0 -s "$@"
 elif [ "$1" = "cache" ]; then
 	shift
 	if [ "$1" = "build" ]; then
 		shift
-		service postgresql start
+		db
 		msfconsole -x '/loader cache watch'
 		service postgresql stop
 	elif [ "$1" = "watch" ]; then

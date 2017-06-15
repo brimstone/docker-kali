@@ -76,6 +76,8 @@ RUN apt update \
  && bundle install --no-deployment \
  && echo "Saving $(du -hs .git) by removing .git" \
  && rm -rf .git \
+ && echo "127.0.0.1:5432:msf:msf:msf" > /root/.pgpass \
+ && chmod 600 /root/.pgpass \
  && echo "production:" > $MSF_DATABASE_CONFIG \
  && echo " adapter: postgresql" >> $MSF_DATABASE_CONFIG \
  && echo " database: msf" >> $MSF_DATABASE_CONFIG \
