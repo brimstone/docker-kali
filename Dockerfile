@@ -104,7 +104,11 @@ COPY loader /
 
 COPY lists /pentest/
 
+COPY scripts/msfconsole.rc /root/.msf4/msfconsole.rc
+
 RUN /loader cache build
+
+EXPOSE 80 443 4444
 
 ENTRYPOINT ["/loader"]
 WORKDIR /pentest
