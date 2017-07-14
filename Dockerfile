@@ -94,7 +94,11 @@ RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
 RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
- && rm -rf /pentest/seclists/.git
+ && rm -rf /pentest/seclists/.git \
+ && git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
+ && rm -rf /pentest/msfpayloadgenerator/.git \
+ && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh
+
 
 RUN wpscan --update
 
