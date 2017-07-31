@@ -33,6 +33,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely netcat-traditional \
+    aircrack-ng pyrit cowpatty pciutils kmod \
  && rm -rf /var/lib/apt/lists \
  && curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
     -Lo /usr/bin/gobuster \
@@ -97,8 +98,9 @@ RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --dep
  && rm -rf /pentest/seclists/.git \
  && git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
  && rm -rf /pentest/msfpayloadgenerator/.git \
- && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh
-
+ && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh \
+ && git clone https://github.com/derv82/wifite /opt/wifite \
+ && ln -s /opt/wifite/wifite.py /sbin/wifite
 
 RUN wpscan --update
 
