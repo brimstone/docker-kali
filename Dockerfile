@@ -48,7 +48,7 @@ RUN apt update \
 RUN gem install wirble sqlite3 bundler \
  && mkdir /pentest
 
-RUN sed -i 's/md5$/trust/g' /etc/postgresql/9.6/main/pg_hba.conf \
+RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
  && /etc/init.d/postgresql start \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
