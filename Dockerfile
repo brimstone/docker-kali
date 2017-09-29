@@ -10,7 +10,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0.0-rc1"
 
 ENV LHOST= \
-    MSF_DATABASE_CONFIG=/usr/share/metasploit-framework/config/database.yml
+    MSF_DATABASE_CONFIG=/opt/metasploit-framework/embedded/framework/config/database.yml
 
 COPY pax-pre-install /usr/local/sbin/pax-pre-install
 
@@ -33,7 +33,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely netcat-traditional \
-    aircrack-ng pyrit cowpatty pciutils kmod \
+    aircrack-ng pyrit cowpatty pciutils kmod wget \
  && rm -rf /var/lib/apt/lists \
  && curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
     -Lo /usr/bin/gobuster \
@@ -55,28 +55,11 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
 
 # Update metasploit the hard way
 # There's something dumb about what the package does to work with system ruby
-RUN apt update \
- && apt install -y --no-install-recommends \
-	metasploit-framework \
+COPY msfinstall /usr/bin/msfinstall
+
+RUN /usr/bin/msfinstall \
  && rm -rf /var/lib/apt/lists \
- && version="$(msfconsole -v 2>&1 | sed 's/^.*: //g;s/-.*$//')" \
- && echo "Checking out metasploit-framework version $version" \
- && git clone -b "$version" https://github.com/rapid7/metasploit-framework.git \
-    /pentest/metasploit-framework \
- && mv /pentest/metasploit-framework/.git /usr/share/metasploit-framework/ \
- && rm -rf /pentest/metasploit-framework \
- && mv /usr/share/metasploit-framework /pentest/metasploit-framework \
- && ln -s /pentest/metasploit-framework /usr/share/ \
- && cd /pentest/metasploit-framework \
- && git config --global user.email "you@example.com" \
- && git config --global user.name "Your Name" \
- && git stash \
- && git checkout master \
- && git stash pop || true \
- && git checkout HEAD -- Gemfile.lock \
- && bundle install --no-deployment \
- && echo "Saving $(du -hs .git) by removing .git" \
- && rm -rf .git \
+ && ln -s /opt/metasploit-framework /pentest/ \
  && echo "127.0.0.1:5432:msf:msf:msf" > /root/.pgpass \
  && chmod 600 /root/.pgpass \
  && echo "production:" > $MSF_DATABASE_CONFIG \
@@ -89,7 +72,7 @@ RUN apt update \
  && echo " pool: 75" >> $MSF_DATABASE_CONFIG \
  && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
  && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
-    > /pentest/metasploit-framework/plugins/pentest.rb
+    > /pentest/metasploit-framework/embedded/framework/plugins/pentest.rb
 
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
