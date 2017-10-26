@@ -17,6 +17,10 @@ elif [ "$1" = "msfd" ]; then
 	shift
 	db
 	exec msfd -f -a 0.0.0.0 -s "$@"
+elif [ "$1" = "dradis" ]; then
+	redis-server &
+	cd /usr/lib/dradis-ce/
+	exec bundle exec rails server -b 0.0.0.0
 elif [ "$1" = "cache" ]; then
 	shift
 	if [ "$1" = "build" ]; then

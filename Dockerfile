@@ -34,6 +34,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely netcat-traditional \
     aircrack-ng pyrit cowpatty pciutils kmod wget \
+ && apt clean \
  && rm -rf /var/lib/apt/lists \
  && curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
     -Lo /usr/bin/gobuster \
@@ -43,6 +44,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
 RUN apt update \
  && apt install -y --no-install-recommends \
 	burpsuite openjdk-8-jre zaproxy exploitdb \
+ && apt clean \
  && rm -rf /var/lib/apt/lists
 
 RUN gem install wirble sqlite3 bundler \
@@ -58,7 +60,6 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
 COPY msfinstall /usr/bin/msfinstall
 
 RUN /usr/bin/msfinstall \
- && rm -rf /var/lib/apt/lists \
  && ln -s /opt/metasploit-framework /pentest/ \
  && echo "127.0.0.1:5432:msf:msf:msf" > /root/.pgpass \
  && chmod 600 /root/.pgpass \
@@ -77,12 +78,22 @@ RUN /usr/bin/msfinstall \
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    libsqlite3-dev redis-server libmariadbclient-dev-compat \
+ && git clone https://github.com/dradis/dradis-ce.git /usr/lib/dradis-ce/ --depth 1\
+ && cd /usr/lib/dradis-ce/ \
+ && bundle install --path /usr/lib/dradis-ce/ \
+ && bin/setup \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists
+
 RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \
  && git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
  && rm -rf /pentest/msfpayloadgenerator/.git \
  && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh \
- && git clone https://github.com/derv82/wifite /opt/wifite \
+ && git clone https://github.com/derv82/wifite /opt/wifite --depth 1 \
  && ln -s /opt/wifite/wifite.py /sbin/wifite
 
 RUN wpscan --update
