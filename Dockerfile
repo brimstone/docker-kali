@@ -95,7 +95,7 @@ RUN apt update \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
-COPY dradis/oscp.erb /pentest/dradis-ce/templates/reports/html_export/
+COPY dradis/oscp.html.erb /pentest/dradis-ce/templates/reports/html_export/
 
 RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \
