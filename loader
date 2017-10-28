@@ -19,7 +19,8 @@ elif [ "$1" = "msfd" ]; then
 	exec msfd -f -a 0.0.0.0 -s "$@"
 elif [ "$1" = "dradis" ]; then
 	redis-server &
-	cd /usr/lib/dradis-ce/
+	cd /pentest/dradis-ce/
+	exec bundle exec rake resque:work &
 	exec bundle exec rails server -b 0.0.0.0
 elif [ "$1" = "cache" ]; then
 	shift

@@ -81,10 +81,18 @@ RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
 RUN apt update \
  && apt install -y --no-install-recommends \
     libsqlite3-dev redis-server libmariadbclient-dev-compat \
- && git clone https://github.com/dradis/dradis-ce.git /usr/lib/dradis-ce/ --depth 1\
- && cd /usr/lib/dradis-ce/ \
- && bundle install --path /usr/lib/dradis-ce/ \
+ && git clone https://github.com/dradis/dradis-ce.git /pentest/dradis-ce/ -b v3.6.0 --depth 1\
+ && cd /pentest/dradis-ce/ \
+ && bundle install --path /pentest/dradis-ce/ \
  && bin/setup \
+ && wget https://dradisframework.com/academy/files/dradis-ce_compliance_package-oscp.v0.3.zip \
+ && mkdir -p templates/notes templates/reports/html_export \
+ && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis-export-oscp.zip -d public/ \
+ && echo 'Maybe try the <a href="/dradis-ce_compliance_package-oscp.v0.3.zip">oscp project</a>?' >> app/views/upload/index.html.erb \
+ && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis_template-oscp.v0.3.html.erb -d templates/reports/html_export/ \
+ && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/\*txt -d templates/notes/ \
+ && rm templates/notes/instructions.txt \
+ && rm dradis-ce_compliance_package-oscp.v0.3.zip \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
