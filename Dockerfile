@@ -89,12 +89,13 @@ RUN apt update \
  && mkdir -p templates/notes templates/reports/html_export \
  && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis-export-oscp.zip -d public/ \
  && echo 'Maybe try the <a href="/dradis-ce_compliance_package-oscp.v0.3.zip">oscp project</a>?' >> app/views/upload/index.html.erb \
- && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis_template-oscp.v0.3.html.erb -d templates/reports/html_export/ \
  && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/\*txt -d templates/notes/ \
  && rm templates/notes/instructions.txt \
  && rm dradis-ce_compliance_package-oscp.v0.3.zip \
  && apt clean \
  && rm -rf /var/lib/apt/lists
+
+COPY dradis/oscp.erb /pentest/dradis-ce/templates/reports/html_export/
 
 RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \

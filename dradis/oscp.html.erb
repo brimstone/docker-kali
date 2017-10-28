@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= title %></title>
+    <style type="text/css">
+      /* Sticky footer styles
+      /* See:
+      /*   http://getbootstrap.com/examples/sticky-footer/
+      -------------------------------------------------- */
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+        padding-bottom: 60px;
+      }
+      #footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 60px;
+        background-color: #f5f5f5;
+      }
+
+
+      /* Custom page CSS
+      -------------------------------------------------- */
+      /* Not required for template or sticky footer method. */
+
+      .rating-critical { color: purple; }
+      .rating-high { color: red; }
+      .rating-medium { color: orange; }
+      .rating-low { color: blue; }
+
+      .container {
+        padding: 0 15px;
+      }
+      .container .text-muted {
+        margin: 20px 0;
+      }
+      .header-title{
+        text-align: center;
+      }
+      h3 {
+        text-align: center;
+      }
+      h4 {
+        font-size: 20px;
+        background-color: lightsteelblue;
+        padding: 8px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      table, th, td {
+        border: 1px solid black;
+        padding: 10px;
+      }
+      table th {
+        text-align: center;
+        background-color: lightsteelblue;
+      }
+      img {
+        max-width: 75%;
+      }
+
+      #footer2{border-top: 1px solid #ccc;text-align: right;padding-right: 69px;min-height: 64px;height: auto !important;height: 64px;background: url('/assets/logopro_tiny.png') 100% 50% no-repeat;}
+    </style>
+
+    <!-- Latest compiled and minified CSS -->
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="/assets//bootstrap.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <noscript>
+      <div class="alert alert-danger">
+      <p><strong>Warning</strong>: this report template loads jQuery and Bootstrap JS files from their CDNs, but JavaScript seems to be disabled.</p>
+      </div>
+    </noscript>
+
+    <div class="header-title">
+      <h1>Offensive Security</h1>
+      <h2>Penetration Test Report for Internal Lab and Exam</h2>
+      <% for note in notes;
+          note_type = note.fields['Type'];
+          case note_type
+            when "Tester"
+              %><h4><%= markup(note.fields['Version']) %></h4><%
+              %><h4><%= markup(note.fields['Email']) %></h4><%
+              %><h3>OSID: <%= h note.fields['OSID'] %></h3><%
+          end
+        end %>
+    </div>
+
+    <div class="container">
+    <h2 style="text-align:left;">Table of contents</h2>
+      <p><a href="#summary">High-Level Summary</a></p>
+      <ul>
+        <li><a href="#recommendations">Recommendations</a></li>
+      </ul>
+      <p><a href="#methodologies">Methodologies</a></p>
+      <ul>
+        <li><a href="#informationgathering">Information Gathering</a></li>
+        <li><a href="#serviceenumeration">Service Enumeration</a></li>
+        <li>
+          <a href="#penetration">Penetration</a>
+          <ul>
+            <% for node in Node.user_nodes %>
+              <% if node.type_id == Node::Types::HOST %>
+                <li>
+                  <a href="#node_<%= node.id %>">System: <%= node.label %></a>
+                  <ul>
+                    <% for evidence in node.evidence do %>
+                      <% issue = evidence.issue %>
+                      <li><a href="#note_<%= issue.id %>">Vulnerability Exploited: <%= h issue.fields['Title'] %></a></li>
+                    <% end %>
+                  </ul>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+        <li><a href="#maintainingaccess">Maintaining Access</a></li>
+        <li><a href="#housecleaning">House Cleaning</a></li>
+      </ul>
+      <p><a href="#additional">Additional Items Not Mentioned in the Report</a></p>
+      <br/><hr/><br/>
+
+      <% for note in notes;
+          note_type = note.fields['Type'];
+          case note_type
+            when "Summary"
+              %><h1 id="summary"><%= markup(note.fields['Title']) %></h1><%
+              %><%= markup(note.fields['Summary']) %><%
+              %><br/><hr/><br/><h2 id="recommendations">Recommendations</h2><%
+              %><%= markup(note.fields['Recommendations']) %><%
+          end
+        end %>
+      <br/><hr/><br/>
+
+      <% for note in notes;
+          note_type = note.fields['Type'];
+          case note_type
+            when "Methodologies"
+              %><h1 id="methodologies"><%= markup(note.fields['Title']) %></h1><%
+              %><%= markup(note.fields['Summary']) %><%
+            when "InformationGathering"
+              %><br/><hr/><br/><h2 id="informationgathering"><%= markup(note.fields['Title']) %></h2><%
+              %><%= markup(note.fields['Summary']) %><%
+            when "ServiceEnumeration"
+              %><br/><hr/><br/><h2 id="serviceenumeration"><%= markup(note.fields['Title']) %></h2><%
+	      %><%= markup(note.fields['Summary']) %>
+      <table>
+	<tr>
+		<th>Server IP Address </th>
+		<th>Ports Open </th>
+	</tr>
+
+            <% for node in Node.user_nodes %>
+              <% if node.type_id == Node::Types::HOST %>
+		      <tr>
+			      <td><%= node.label %>(<%= node.properties['ip'] %>)</td>
+			      <td>
+			      <% if node.properties['services'] != nil %>
+				      <% tcp=[]
+				      udp=[]
+				      for service in node.properties['services']
+					if service['protocol'] == 'tcp'
+						tcp.push(service['port'])
+					elsif service['protocol'] == 'udp'
+						udp.push(service['port'])
+					end
+				      end %>
+				      <% if tcp.length > 0 %>
+				      TCP: <%= tcp.join(", ") %>
+			              <% end %>
+				      <% if udp.length > 0 %>
+				      UDP: <%= udp.join(", ") %>
+			              <% end %>
+			      <% end %>
+			      </td>
+		      </tr>
+              <% end %>
+            <% end %>
+      </table>
+          <%
+          end   
+        end %>
+      <br/><hr/><br/>
+
+      <h2 id="penetration">Penetration</h2>
+
+      <% for node in Node.user_nodes %>
+        <% if node.type_id == Node::Types::HOST %>
+          <div id="node_<%= node.id %>" class="note-content">
+            <h3>System: <%= node.label %></h3>
+            <% for evidence in node.evidence do %>
+              <% issue = evidence.issue %>
+              <% rating = issue.fields['Severity'].to_s.downcase %>
+
+              <div id="note_<%= issue.id %>" class="note-content">
+                <h4>Vulnerability Exploited: <%= h issue.fields['Title'] %></h4>
+                <p><strong>Vulnerability Explanation:</strong> <%= h issue.fields['Description'] %></p>
+                <p><strong>Vulnerability Fix:</strong> <%= h issue.fields['Fix'] %></p>
+                <p><strong>Severity: </strong><strong class="rating-<%= rating %>">Critical</strong></p>
+
+                <div class="content-textile" id="evidence_<%= node.id %>">
+                  <p><strong>Proof of Concept Code for <%= node.label %>:</strong></p>
+                  <%= markup(evidence.fields['Proof']) %>
+                  <p><strong>Screenshot for <%= node.label %>:</strong></p>
+                  <%= markup(evidence.fields['Screenshot']) %>
+                </div>
+
+              </div><br/><hr/><br/>
+
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% for note in notes;
+          note_type = note.fields['Type'];
+          case note_type
+            when "MaintainingAccess"
+              %><h2 id="maintainingaccess"><%= markup(note.fields['Title']) %></h2><%
+              %><%= markup(note.fields['Summary']) %><%
+            when "HouseCleaning"
+              %><br/><hr/><br/><h2 id="housecleaning"><%= markup(note.fields['Title']) %></h2><%
+              %><%= markup(note.fields['Summary']) %><%
+          end   
+        end %>
+      <br/><hr/><br/>
+
+      <h1 id="additional">Additional Items Not Mentioned in the Report</h1>
+      <% for note in notes;
+          note_type = note.fields['Type'];
+          case note_type
+            when "Appendix"
+              %><h2><%= markup(note.fields['Title']) %></h2><%
+              %><%= markup(note.fields['Summary']) %><%
+          end   
+        end %>
+
+    </div>
+    <br/><hr/><br/>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted text-center"><%= title%> - <a href="http://dradisframework.org">http://dradisframework.org</a></p>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+    <script src="/assets/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> -->
+    <script src="/assets/bootstrap.js"></script>
+  </body>
+</html>
