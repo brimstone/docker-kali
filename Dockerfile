@@ -81,8 +81,9 @@ RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
 RUN apt update \
  && apt install -y --no-install-recommends \
     libsqlite3-dev redis-server libmariadbclient-dev-compat \
- && git clone https://github.com/dradis/dradis-ce.git /pentest/dradis-ce/ -b v3.6.0 --depth 1\
+ && git clone https://github.com/dradis/dradis-ce.git /pentest/dradis-ce/ -b release-3.7 --depth 1 \
  && cd /pentest/dradis-ce/ \
+ && echo "gem 'dradis-pdf_export', '~> 3.7', github: 'dradis/dradis-pdf_export'" >> Gemfile.plugins.template \
  && bundle install --path /pentest/dradis-ce/ \
  && bin/setup \
  && wget https://dradisframework.com/academy/files/dradis-ce_compliance_package-oscp.v0.3.zip \
