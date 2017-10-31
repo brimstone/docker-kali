@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+service postgresql start
+until psql -h 127.0.0.1 msf msf -c '\q'; do
+	sleep 2
+done
+
+exec /usr/bin/msfd -f -a 0.0.0.0 -s "$@"

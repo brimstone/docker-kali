@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+service postgresql start
+until psql -h 127.0.0.1 msf msf -c '\q'; do
+	sleep 2
+done
+
+exec /usr/bin/msfconsole -x "set -g CHOST 0.0.0.0; set -g LHOST ${LHOST:-0.0.0.0};" "$@"

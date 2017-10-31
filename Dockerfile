@@ -108,17 +108,14 @@ RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --dep
 
 RUN wpscan --update
 
-COPY bin/* /bin/
-
-COPY loader /
+COPY bin/* /usr/local/bin/
 
 COPY lists /pentest/
 
 COPY scripts/msfconsole.rc /root/.msf4/msfconsole.rc
 
-RUN /loader cache build
+RUN msfcache build
 
 EXPOSE 80 443 4444
 
-ENTRYPOINT ["/loader"]
 WORKDIR /pentest
