@@ -89,7 +89,7 @@ RUN apt update \
  && wget https://dradisframework.com/academy/files/dradis-ce_compliance_package-oscp.v0.3.zip \
  && mkdir -p templates/notes templates/reports/html_export \
  && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis-export-oscp.zip -d public/ \
- && echo 'Maybe try the <a href="/dradis-ce_compliance_package-oscp.v0.3.zip">oscp project</a>?' >> app/views/upload/index.html.erb \
+ && echo 'Maybe try the <a href="/dradis-export-oscp.zip">oscp project</a>?' >> app/views/upload/index.html.erb \
  && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/\*txt -d templates/notes/ \
  && rm templates/notes/instructions.txt \
  && rm dradis-ce_compliance_package-oscp.v0.3.zip \
