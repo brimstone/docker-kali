@@ -33,7 +33,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
     mitmproxy postgresql python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely netcat-traditional \
-    aircrack-ng pyrit cowpatty pciutils kmod wget \
+    aircrack-ng pyrit cowpatty pciutils kmod wget unicornscan \
  && apt clean \
  && rm -rf /var/lib/apt/lists \
  && curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
