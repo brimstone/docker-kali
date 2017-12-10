@@ -179,7 +179,16 @@
 			      <% if node.properties['services'] != nil %>
 				      <% tcp=[]
 				      udp=[]
-				      for service in node.properties['services']
+				      services = []
+				      if node.properties['services'].is_a? Hash
+					services.push(node.properties['services'])
+				      else
+					services = node.properties['services']
+				      end
+				      for service in services
+					if service['state'] != "open"
+					  next
+					end
 					if service['protocol'] == 'tcp'
 						tcp.push(service['port'])
 					elsif service['protocol'] == 'udp'
