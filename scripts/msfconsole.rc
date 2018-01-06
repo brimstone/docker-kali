@@ -1,5 +1,8 @@
 setg prompt [%T] %L (s:%S j:%J)
 
+load alias
+alias s "sessions -i"
+
 use exploit/multi/handler
 set PAYLOAD generic/shell_reverse_tcp
 set LPORT 443
