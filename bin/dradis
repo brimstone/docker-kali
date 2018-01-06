@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+rm -f /pentest/dradis-ce/tmp/pids/server.pid
 redis-server &
 cd /pentest/dradis-ce/
 bundle exec rake resque:work &
