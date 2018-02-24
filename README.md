@@ -5,7 +5,7 @@ Docker images for various bits of Kali Linux
 [![](https://img.shields.io/docker/stars/brimstone/kali.svg)](https://hub.docker.com/r/brimstone/kali 'DockerHub')
 
 ## Basic Usage
-`docker run --rm -ti --net host brimstone/kali`msf
+`docker run --rm -ti --net host brimstone/kali msf`
 
 This will start `msfconsole` with a postgresql server, ready to rock. The
 postgresql server has already been preloaded with the module cache, so lookups
