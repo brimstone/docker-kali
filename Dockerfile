@@ -98,7 +98,7 @@ RUN apt update \
 
 COPY dradis/oscp.html.erb /pentest/dradis-ce/templates/reports/html_export/
 
-RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
+RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \
  && git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
  && rm -rf /pentest/msfpayloadgenerator/.git \
