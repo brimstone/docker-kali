@@ -22,7 +22,7 @@ RUN /usr/local/sbin/pax-pre-install --install \
  && echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" \
     >> /etc/apt/sources.list.d/kali.list \
  && for tries in 1 2 3 4; do \
-      apt-key adv --keyserver pgp.mit.edu --recv-keys ED444FF07D8D0BF6 && break \
+      apt-key adv --keyserver pgp.mit.edu --recv-keys ED444FF07D8D0BF6 || sleep 2 \
   ; done \
  && apt update \
  && apt install -y --no-install-recommends \
