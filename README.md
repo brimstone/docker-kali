@@ -2,6 +2,7 @@
 Docker images for various bits of Kali Linux
 
 [![](https://images.microbadger.com/badges/image/brimstone/kali.svg)](https://microbadger.com/images/brimstone/kali "Get your own image badge on microbadger.com")
+[![](https://img.shields.io/docker/stars/brimstone/kali.svg)](https://hub.docker.com/r/brimstone/kali 'DockerHub')
 
 ## Basic Usage
 `docker run --rm -ti --net host brimstone/kali`msf
