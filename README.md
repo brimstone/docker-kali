@@ -1,5 +1,5 @@
 # kali
-Docker images for various bits of Kali Linux
+A Docker image for various bits of Kali Linux
 
 [![](https://images.microbadger.com/badges/image/brimstone/kali.svg)](https://microbadger.com/images/brimstone/kali "Get your own image badge on microbadger.com")
 [![](https://img.shields.io/docker/stars/brimstone/kali.svg)](https://hub.docker.com/r/brimstone/kali 'DockerHub')
