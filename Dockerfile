@@ -78,25 +78,25 @@ RUN /usr/bin/msfinstall \
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
-RUN apt update \
- && apt install -y --no-install-recommends \
-    libsqlite3-dev redis-server libmariadbclient-dev-compat \
- && git clone https://github.com/dradis/dradis-ce.git /pentest/dradis-ce/ -b release-3.7 --depth 1 \
- && cd /pentest/dradis-ce/ \
- && echo "gem 'dradis-pdf_export', '~> 3.7', github: 'dradis/dradis-pdf_export'" >> Gemfile.plugins.template \
- && bundle install --path /pentest/dradis-ce/ \
- && bin/setup \
- && wget https://dradisframework.com/academy/files/dradis-ce_compliance_package-oscp.v0.3.zip \
- && mkdir -p templates/notes templates/reports/html_export \
- && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis-export-oscp.zip -d public/ \
- && echo 'Maybe try the <a href="/dradis-export-oscp.zip">oscp project</a>?' >> app/views/upload/index.html.erb \
- && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/\*txt -d templates/notes/ \
- && rm templates/notes/instructions.txt \
- && rm dradis-ce_compliance_package-oscp.v0.3.zip \
- && apt clean \
- && rm -rf /var/lib/apt/lists
-
-COPY dradis/oscp.html.erb /pentest/dradis-ce/templates/reports/html_export/
+# Dradis breaks because of json 1.8.3 and ruby 2.4
+#RUN apt update \
+# && apt install -y --no-install-recommends \
+#    libsqlite3-dev redis-server libmariadbclient-dev-compat \
+# && git clone https://github.com/dradis/dradis-ce.git /pentest/dradis-ce/ -b release-3.7 --depth 1 \
+# && cd /pentest/dradis-ce/ \
+# && echo "gem 'dradis-pdf_export', '~> 3.7', github: 'dradis/dradis-pdf_export'" >> Gemfile.plugins.template \
+# && bundle install --path /pentest/dradis-ce/ \
+# && bin/setup \
+# && wget https://dradisframework.com/academy/files/dradis-ce_compliance_package-oscp.v0.3.zip \
+# && mkdir -p templates/notes templates/reports/html_export \
+# && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/dradis-export-oscp.zip -d public/ \
+# && echo 'Maybe try the <a href="/dradis-export-oscp.zip">oscp project</a>?' >> app/views/upload/index.html.erb \
+# && unzip -j dradis-ce_compliance_package-oscp.v0.3.zip dradis-ce_compliance_package-oscp.v0.3/\*txt -d templates/notes/ \
+# && rm templates/notes/instructions.txt \
+# && rm dradis-ce_compliance_package-oscp.v0.3.zip \
+# && apt clean \
+# && rm -rf /var/lib/apt/lists
+# COPY dradis/oscp.html.erb /pentest/dradis-ce/templates/reports/html_export/
 
 RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \
