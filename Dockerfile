@@ -114,6 +114,8 @@ COPY lists /pentest/
 
 COPY scripts/msfconsole.rc /root/.msf4/msfconsole.rc
 
+COPY share /pentest/
+
 RUN msfcache build
 
 EXPOSE 80 443 4444

