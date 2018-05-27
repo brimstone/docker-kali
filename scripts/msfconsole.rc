@@ -3,9 +3,6 @@ setg prompt [%T] %L (s:%S j:%J)
 load alias
 alias s "sessions -i"
 
-use exploit/multi/handler
-set PAYLOAD generic/shell_reverse_tcp
-set LPORT 443
-set LHOST 0.0.0.0
-set ExitOnSession false
-exploit -j
+alias https-make "resource /root/.msf4/https-make.rc"
+alias https-listen "resource /root/.msf4/https-listen.rc"
+alias nc-listen "resource /root/.msf4/nc-listen.rc"
