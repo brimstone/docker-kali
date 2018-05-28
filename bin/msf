@@ -23,7 +23,7 @@ until psql -h 127.0.0.1 msf msf -c '\q'; do
 done
 
 if [ -n "${LIF:-}" ]; then
-	LHOST="$(ipdata -pa "$LIF")"
+	LHOST="$(ifdata -pa "$LIF")"
 	export LHOST
 fi
 
