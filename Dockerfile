@@ -115,6 +115,8 @@ COPY lists /pentest/lists
 
 COPY scripts/* /root/.msf4/
 
+RUN git clone https://github.com/brimstone/metasploit-modules /root/.msf4/modules
+
 COPY share /pentest/share
 
 RUN msfcache build
