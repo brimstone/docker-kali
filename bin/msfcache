@@ -13,7 +13,7 @@ elif [ "$1" = "watch" ]; then
 	shift
 	old=0
 	new=0
-	until [ "$new" -gt 3000 ] && [ "$new" -eq "$old" ]; do
+	until [ "$new" -gt 2000 ] && [ "$new" -eq "$old" ]; do
 		old="$new"
 		new="$(psql -U msf -h 127.0.0.1 msf -At -c 'select count(*) from module_details' || echo "0")"
 		echo "Module cache is now: $new"
