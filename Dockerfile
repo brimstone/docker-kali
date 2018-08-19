@@ -117,7 +117,8 @@ COPY scripts/* /root/.msf4/
 
 RUN git clone https://github.com/brimstone/metasploit-modules /root/.msf4/modules
 
-RUN git clone https://github.com/brimstone/post-brimstone-harden /root/.msf4/modules/post/brimstone/harden
+RUN git clone https://github.com/brimstone/post-brimstone-harden /root/.msf4/modules/post/brimstone/harden \
+ && rm -rf /root/.msf4/modules/post/brimstone/harden/.git/hooks
 
 COPY share /pentest/share
 
