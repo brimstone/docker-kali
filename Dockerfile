@@ -72,7 +72,7 @@ RUN /usr/bin/msfinstall \
  && echo " host: 127.0.0.1" >> $MSF_DATABASE_CONFIG \
  && echo " port: 5432" >> $MSF_DATABASE_CONFIG \
  && echo " pool: 75" >> $MSF_DATABASE_CONFIG \
- && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
+ && echo " timeout: 5" >> $MSF_DATABASE_CONFIG
 
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
