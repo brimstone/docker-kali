@@ -73,8 +73,6 @@ RUN /usr/bin/msfinstall \
  && echo " port: 5432" >> $MSF_DATABASE_CONFIG \
  && echo " pool: 75" >> $MSF_DATABASE_CONFIG \
  && echo " timeout: 5" >> $MSF_DATABASE_CONFIG \
- && curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
-    > /pentest/metasploit-framework/embedded/framework/plugins/pentest.rb
 
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
@@ -115,14 +113,16 @@ COPY lists /pentest/lists
 
 COPY scripts/* /root/.msf4/
 
+COPY share /pentest/share
+
+RUN msfcache build
+
 RUN git clone https://github.com/brimstone/metasploit-modules /root/.msf4/modules
 
 RUN git clone https://github.com/brimstone/post-brimstone-harden /root/.msf4/modules/post/brimstone/harden \
  && rm -rf /root/.msf4/modules/post/brimstone/harden/.git/hooks
-
-COPY share /pentest/share
-
-RUN msfcache build
+RUN curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
+    > /root/.msf4/plugins/pentest.rb
 
 EXPOSE 80 443 4444
 
