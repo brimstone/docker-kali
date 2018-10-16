@@ -8,3 +8,5 @@ alias make-https "resource /root/.msf4/https.rc"
 alias make-nc "resource /root/.msf4/nc-listen.rc"
 
 set -g ExitOnSession false
+
+loadpath /root/msf4/modules
