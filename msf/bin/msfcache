@@ -6,7 +6,7 @@ if [ "$1" = "build" ]; then
 	until psql -h 127.0.0.1 msf msf -c '\q'; do
 		sleep 2
 	done
-	/usr/bin/msfconsole -x 'msfcache watch'
+	/usr/bin/msfconsole -x 'db_rebuild_cache; msfcache watch'
 	service postgresql stop
 	psql -h 127.0.0.1 msf msf -c '\q' || true
 elif [ "$1" = "watch" ]; then

@@ -1,0 +1,7 @@
+#!/bin/bash
+set -ueo pipefail
+
+docker push brimstone/kali:base
+docker push brimstone/kali:msf-nightly
+docker push brimstone/kali:msf-master
+docker tag brimstone/kali:msf-master brimstone/kali:latest

@@ -1,6 +1,9 @@
 #!/bin/bash
+set -ueo pipefail
 
 # stolen from https://medium.com/microscaling-systems/labelling-automated-builds-on-docker-hub-f3d073fb8e1
 docker build --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
              --build-arg BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-             -t "$IMAGE_NAME" .
+             -t brimstone/kali:base .
+docker build -t brimstone/kali:msf-nightly -f Dockerfile.msf-nightly .
+docker build -t brimstone/kali:msf-master -f Dockerfile.msf-master .
