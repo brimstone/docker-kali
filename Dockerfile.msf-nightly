@@ -44,7 +44,4 @@ RUN msfcache build
 RUN rm -rf /root/.msf4 \
  && git clone https://github.com/brimstone/metasploit-modules /root/.msf4
 
-RUN curl -L https://raw.githubusercontent.com/darkoperator/Metasploit-Plugins/master/pentest.rb \
-    > /root/.msf4/plugins/pentest.rb
-
 EXPOSE 80 443 4444
