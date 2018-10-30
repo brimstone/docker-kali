@@ -15,7 +15,7 @@ if [ ! -s /certs/cert.pem ]; then
 	rm -f www.example.com.key www.example.com.crt
 ) 2>/dev/null >/dev/null &
 fi
-[ -e /root/.msf4/payloads.json ] || ln -s /certs/payloads.json /root/.msf4/payloads.json
+ln -fs /certs/payloads.json /root/.msf4/payloads.json
 
 service postgresql start
 until psql -h 127.0.0.1 msf msf -c '\q'; do
