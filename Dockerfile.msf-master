@@ -40,7 +40,8 @@ RUN echo "127.0.0.1:5432:msf:msf:msf" > /root/.pgpass \
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
 
-RUN ln -s /pentest/metasploit-framework/msfconsole /usr/bin
+RUN ln -s /pentest/metasploit-framework/msfconsole /usr/bin \
+ && ln -s /pentest/metasploit-framework/msfvenom /usr/bin
 
 RUN msfcache build
 
