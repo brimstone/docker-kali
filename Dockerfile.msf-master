@@ -7,7 +7,8 @@ RUN apt update \
  && rm -rf /var/lib/apt/lists
 
 # Metasploit Install
-RUN gem install wirble sqlite3 bundler
+RUN gem install wirble sqlite3 \
+ && gem install bundler -v 1.16.1
 
 RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
  && /etc/init.d/postgresql start \
