@@ -29,7 +29,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
-	mfoc mfcuk libnfc-bin hydra nikto wpscan weevely netcat-traditional \
+	mfoc mfcuk libnfc-bin hydra nikto weevely netcat-traditional \
     aircrack-ng pyrit cowpatty pciutils kmod wget unicornscan ftp wfuzz \
     python-pip moreutils upx john \
  && apt clean \
@@ -53,7 +53,15 @@ RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 
  && git clone https://github.com/derv82/wifite /opt/wifite --depth 1 \
  && ln -s /opt/wifite/wifite.py /sbin/wifite
 
-RUN wpscan --update
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    python-iptools python-netifaces python-pydispatch python-zlib-wrapper python-m2crypto python-macholib python-xlrd python-xlutils python-dropbox python-pyminifier \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists \
+ && git clone -b dev https://github.com/EmpireProject/Empire /pentest/empire \
+ && cd /pentest/empire \
+ && printf "\n" | python setup/setup_database.py \
+ && chmod 755 empire
 
 COPY lists /pentest/lists
 
