@@ -58,11 +58,19 @@ RUN apt update \
  && printf "\n" | python setup/setup_database.py \
  && chmod 755 empire
 
+COPY bashrc /root/.bashrc
+
 COPY lists /pentest/lists
 
 COPY bin/* /usr/local/bin/
 
 COPY share /pentest/share
+
+COPY ssh_config /etc/ssh/ssh_config
+
+RUN chown root:root /etc/ssh/ssh_config \
+ && mkdir /root/.ssh \
+ && chmod 700 /root/.ssh
 
 WORKDIR /pentest
 

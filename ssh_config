@@ -1,0 +1,10 @@
+Host *
+	SendEnv LANG LC_*
+	HashKnownHosts yes
+	GSSAPIAuthentication yes
+	ControlMaster auto
+	ControlPersist 600
+	ControlPath ~/.ssh/master-%r@%h:%p
+	Compression yes
+    ServerAliveInterval 30
+    ServerAliveCountMax 2
