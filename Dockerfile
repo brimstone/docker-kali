@@ -9,13 +9,13 @@ RUN apt update \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
+COPY kali.pub /etc/apt/kali.pub
+
 RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     > /etc/apt/sources.list.d/kali.list \
  && echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" \
     >> /etc/apt/sources.list.d/kali.list \
- && for tries in 1 2 3 4; do \
-      apt-key adv --no-tty --keyserver pgp.mit.edu --recv-keys ED444FF07D8D0BF6 || sleep 2 \
-  ; done \
+ && apt-key add /etc/apt/kali.pub \
  && apt update \
  && apt install -y --no-install-recommends \
     less vim build-essential libreadline-dev libssl-dev libpq5 \
