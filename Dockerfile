@@ -56,7 +56,10 @@ RUN apt update \
  && git clone -b dev https://github.com/EmpireProject/Empire /pentest/empire \
  && cd /pentest/empire \
  && printf "\n" | python setup/setup_database.py \
- && chmod 755 empire
+ && chmod 755 empire \
+ && mkdir lib/modules/python/brimstone
+
+COPY empire/* /pentest/empire/lib/modules/python/brimstone
 
 COPY bashrc /root/.bashrc
 
