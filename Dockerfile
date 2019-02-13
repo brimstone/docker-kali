@@ -48,9 +48,12 @@ RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 
  && git clone https://github.com/derv82/wifite /opt/wifite --depth 1 \
  && ln -s /opt/wifite/wifite.py /sbin/wifite
 
+# empire
 RUN apt update \
  && apt install -y --no-install-recommends \
-    python-iptools python-netifaces python-pydispatch python-zlib-wrapper python-m2crypto python-macholib python-xlrd python-xlutils python-dropbox python-pyminifier \
+    python-iptools python-netifaces python-pydispatch python-zlib-wrapper \
+    python-m2crypto python-macholib python-xlrd python-xlutils python-dropbox \
+    python-pyminifier \
  && apt clean \
  && rm -rf /var/lib/apt/lists \
  && git clone -b dev https://github.com/EmpireProject/Empire /pentest/empire \
@@ -60,6 +63,23 @@ RUN apt update \
  && mkdir lib/modules/python/brimstone
 
 COPY empire/* /pentest/empire/lib/modules/python/brimstone
+
+# pupy
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    python-dev python-wheel python-netaddr python-rsa python-psutil \
+    python-setuptools python-pyelftools python-pygments python-dnslib \
+    python-http-parser python-scapy python-defusedxml python-poster \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists \
+ && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
+ && pip install rpyc==3.4.4 tinyec pycryptodome==3.7.0 pylzma dateparser \
+    win-inet-pton msgpack pyuv \
+ && ln -s /pentest/pupy/pupy/pupysh.py /usr/local/bin/pupysh \
+ && cd /pentest/pupy/pupy \
+ && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
+ && tar xvf payload_templates.txz \
+ && rm payload_templates.txz
 
 COPY bashrc /root/.bashrc
 
