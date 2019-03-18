@@ -67,14 +67,13 @@ COPY empire/* /pentest/empire/lib/modules/python/brimstone
 # pupy
 RUN apt update \
  && apt install -y --no-install-recommends \
-    python-dev python-wheel python-netaddr python-rsa python-psutil \
-    python-setuptools python-pyelftools python-pygments python-dnslib \
-    python-http-parser python-scapy python-defusedxml python-poster \
+    python-dev python-setuptools \
  && apt clean \
  && rm -rf /var/lib/apt/lists \
  && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
- && pip install rpyc==3.4.4 tinyec pycryptodome==3.7.0 pylzma dateparser \
-    win-inet-pton msgpack pyuv \
+ && cd /pentest/pupy \
+ && cd pupy \
+ && pip install -r requirements.txt \
  && ln -s /pentest/pupy/pupy/pupysh.py /usr/local/bin/pupysh \
  && cd /pentest/pupy/pupy \
  && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
