@@ -74,7 +74,6 @@ RUN apt update \
  && cd /pentest/pupy \
  && cd pupy \
  && pip install -r requirements.txt \
- && ln -s /pentest/pupy/pupy/pupysh.py /usr/local/bin/pupysh \
  && cd /pentest/pupy/pupy \
  && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
  && tar xvf payload_templates.txz \
