@@ -79,6 +79,14 @@ RUN apt update \
  && tar xvf payload_templates.txz \
  && rm payload_templates.txz
 
+# msf python
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    python3-pip python3-setuptools \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists \
+ && pip3 install pymetasploit3
+
 COPY bashrc /root/.bashrc
 
 COPY lists /pentest/lists
