@@ -17,8 +17,6 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
 ENV LHOST= \
     MSF_DATABASE_CONFIG=/opt/metasploit-framework/embedded/framework/config/database.yml
 
-COPY msf/bin/* /usr/local/bin/
-
 # Update metasploit the easy way, using the latest nightly
 COPY msfinstall /usr/bin/msfinstall
 
@@ -38,6 +36,8 @@ RUN /usr/bin/msfinstall \
 
 RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
   | tar -zxC /pentest/
+
+COPY msf/bin/* /usr/local/bin/
 
 RUN msfcache build
 

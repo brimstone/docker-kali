@@ -18,8 +18,6 @@ RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
 ENV LHOST= \
     MSF_DATABASE_CONFIG=/pentest/metasploit-framework/config/database.yml
 
-COPY msf/bin/* /usr/local/bin/
-
 # Update metasploit the hard way, using git master
 # Stolen from https://github.com/hackerhouse-opensource/hacklab/blob/master/Dockerfile
 RUN git clone https://github.com/rapid7/metasploit-framework \
@@ -44,7 +42,9 @@ RUN curl http://fastandeasyhacking.com/download/armitage150813.tgz \
 RUN ln -s /pentest/metasploit-framework/msfconsole /usr/bin \
  && ln -s /pentest/metasploit-framework/msfvenom /usr/bin
 
-RUN msfcache build
+COPY msf/bin/* /usr/local/bin/
+
+#RUN msfcache build
 
 RUN rm -rf /root/.msf4 \
  && git clone https://github.com/brimstone/metasploit-modules /root/.msf4

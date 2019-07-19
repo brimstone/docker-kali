@@ -73,6 +73,7 @@ RUN apt update \
  && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
  && cd /pentest/pupy \
  && cd pupy \
+ && pip install wheel \
  && pip install -r requirements.txt \
  && cd /pentest/pupy/pupy \
  && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
