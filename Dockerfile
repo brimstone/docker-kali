@@ -23,7 +23,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
     libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
     mitmproxy python-pefile net-tools iputils-ping iptables \
-    sqlmap bettercap bdfproxy rsync enum4linux openssh-client \
+    sqlmap bettercap rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto weevely netcat-traditional \
     aircrack-ng pyrit cowpatty pciutils kmod wget unicornscan ftp wfuzz \
     python-pip moreutils upx john \
