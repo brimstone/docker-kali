@@ -51,20 +51,19 @@ RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 
 # TODO add empire from https://github.com/BC-SECURITY/Empire
 
 # pupy
-# RUN apt update \
-#  && apt install -y --no-install-recommends \
-#     python-dev python-setuptools \
-#  && apt clean \
-#  && rm -rf /var/lib/apt/lists \
-#  && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
-#  && cd /pentest/pupy \
-#  && cd pupy \
-#  && pip install wheel \
-#  && pip install -r requirements.txt \
-#  && cd /pentest/pupy/pupy \
-#  && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
-#  && tar xvf payload_templates.txz \
-#  && rm payload_templates.txz
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    python-dev python-setuptools swig \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists \
+ && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
+ && cd /pentest/pupy/pupy \
+ && pip install wheel \
+ && sed -i '/mss/s/mss/mss==4.0.3/' requirements.txt \
+ && pip install -r requirements.txt \
+ && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
+ && tar xvf payload_templates.txz \
+ && rm payload_templates.txz
 
 # msf python
 RUN apt update \
