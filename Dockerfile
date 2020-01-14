@@ -48,37 +48,23 @@ RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 
  && git clone https://github.com/derv82/wifite /opt/wifite --depth 1 \
  && ln -s /opt/wifite/wifite.py /sbin/wifite
 
-# empire
-RUN apt update \
- && apt install -y --no-install-recommends \
-    python-iptools python-netifaces python-pydispatch python-zlib-wrapper \
-    python-m2crypto python-macholib python-xlrd python-xlutils python-dropbox \
-    python-pyminifier \
- && apt clean \
- && rm -rf /var/lib/apt/lists \
- && git clone -b dev https://github.com/EmpireProject/Empire /pentest/empire \
- && cd /pentest/empire \
- && printf "\n" | python setup/setup_database.py \
- && chmod 755 empire \
- && mkdir lib/modules/python/brimstone
-
-COPY empire/* /pentest/empire/lib/modules/python/brimstone
+# TODO add empire from https://github.com/BC-SECURITY/Empire
 
 # pupy
-RUN apt update \
- && apt install -y --no-install-recommends \
-    python-dev python-setuptools \
- && apt clean \
- && rm -rf /var/lib/apt/lists \
- && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
- && cd /pentest/pupy \
- && cd pupy \
- && pip install wheel \
- && pip install -r requirements.txt \
- && cd /pentest/pupy/pupy \
- && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
- && tar xvf payload_templates.txz \
- && rm payload_templates.txz
+# RUN apt update \
+#  && apt install -y --no-install-recommends \
+#     python-dev python-setuptools \
+#  && apt clean \
+#  && rm -rf /var/lib/apt/lists \
+#  && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
+#  && cd /pentest/pupy \
+#  && cd pupy \
+#  && pip install wheel \
+#  && pip install -r requirements.txt \
+#  && cd /pentest/pupy/pupy \
+#  && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
+#  && tar xvf payload_templates.txz \
+#  && rm payload_templates.txz
 
 # msf python
 RUN apt update \
