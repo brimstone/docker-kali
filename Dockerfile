@@ -59,7 +59,6 @@ RUN apt update \
  && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
  && cd /pentest/pupy/pupy \
  && pip install wheel \
- && sed -i '/mss/s/mss/mss==4.0.3/' requirements.txt \
  && pip install -r requirements.txt \
  && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
  && tar xvf payload_templates.txz \
