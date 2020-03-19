@@ -72,6 +72,12 @@ RUN apt update \
  && rm -rf /var/lib/apt/lists \
  && pip3 install pymetasploit3
 
+RUN mkdir /usr/share/mimikatz \
+ && cd /usr/share/mimikatz \
+ && wget https://github.com/gentilkiwi/mimikatz/releases/latest/download/mimikatz_trunk.zip \
+ && unzip mimikatz_trunk.zip \
+ && rm mimikatz_trunk.zip
+
 COPY bashrc /root/.bashrc
 
 COPY lists /pentest/lists
