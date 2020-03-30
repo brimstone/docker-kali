@@ -79,6 +79,12 @@ RUN mkdir /usr/share/mimikatz \
  && unzip mimikatz_trunk.zip \
  && rm mimikatz_trunk.zip
 
+RUN wget https://github.com/evilsocket/shellz/releases/download/v1.5.0/shellz_1.5.0_linux_amd64.tar.gz \
+    -O shellz.tar.gz \
+ && tar -xvf shellz.tar.gz shellz \
+ && mv shellz /usr/local/bin/ \
+ && rm shellz.tar.gz
+
 COPY bashrc /root/.bashrc
 
 COPY lists /pentest/lists
@@ -94,6 +100,8 @@ RUN chown root:root /etc/ssh/ssh_config \
  && chmod 700 /root/.ssh
 
 WORKDIR /pentest
+
+ENV USER=root
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/brimstone/docker-kali" \
