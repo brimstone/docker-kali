@@ -26,10 +26,11 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     sqlmap bettercap rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto weevely netcat-traditional \
     aircrack-ng pyrit cowpatty pciutils kmod wget unicornscan ftp wfuzz \
-    python-pip moreutils upx john \
+    python-pip moreutils upx john file \
  && apt clean \
- && rm -rf /var/lib/apt/lists \
- && curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
+ && rm -rf /var/lib/apt/lists
+
+RUN curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
     -Lo /usr/bin/gobuster \
  && chmod 755 /usr/bin/gobuster
 
