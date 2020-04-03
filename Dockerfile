@@ -25,7 +25,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     mitmproxy python-pefile net-tools iputils-ping iptables \
     sqlmap bettercap rsync enum4linux openssh-client \
 	mfoc mfcuk libnfc-bin hydra nikto weevely netcat-traditional \
-    aircrack-ng pyrit cowpatty pciutils kmod wget unicornscan ftp wfuzz \
+    aircrack-ng cowpatty pciutils kmod wget unicornscan ftp wfuzz \
     python-pip moreutils upx john file hashcat cpio\
  && apt clean \
  && rm -rf /var/lib/apt/lists
