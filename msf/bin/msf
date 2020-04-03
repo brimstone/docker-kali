@@ -1,21 +1,20 @@
 #!/bin/bash
 set -euo pipefail
 
-# Maybe check to see if /certs exists, then maybe don't run this or the rc bits
-mkdir -p /certs
-mkdir -p /tmp/payloads
-if [ ! -s /certs/cert.pem ]; then
+CN="${CN:-www.example.com}"
+# Maybe check to see if /export exists, then maybe don't run this or the rc bits
+mkdir -p /export
+if [ ! -s /export/cert.pem ]; then
 (
 	# https://github.com/rapid7/metasploit-framework/wiki/Meterpreter-Paranoid-Mode
 	openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
-    -subj "/C=US/ST=Texas/L=Austin/O=Development/CN=www.example.com" \
-    -keyout www.example.com.key \
-    -out www.example.com.crt
-	cat www.example.com.key www.example.com.crt > /certs/cert.pem &&
-	rm -f www.example.com.key www.example.com.crt
+    -subj "/C=US/ST=Texas/L=Austin/O=Development/CN=$CN" \
+    -keyout msf.key \
+    -out msf.crt
+	cat msf.key msf.crt > /export/cert.pem &&
+	rm -f msf.key msf.crt
 ) 2>/dev/null >/dev/null &
 fi
-ln -fs /certs/payloads.json /root/.msf4/payloads.json
 
 service postgresql start
 until psql -h 127.0.0.1 msf msf -c '\q'; do
