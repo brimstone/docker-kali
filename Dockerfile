@@ -1,4 +1,7 @@
+FROM brimstone/ipfs as ipfs
+
 FROM debian:stretch
+SHELL ["/bin/bash", "-c"]
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -33,6 +36,24 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
 RUN curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
     -Lo /usr/bin/gobuster \
  && chmod 755 /usr/bin/gobuster
+
+COPY --from=ipfs /usr/local/bin/ipfs /usr/local/bin/ipfs
+
+RUN ipfs init \
+ ; echo $? \
+ && find /root/.ipfs -ls \
+ && ipfs daemon & \
+    sleep 2 \
+ &&  ipfs get QmSGPpRkmsB6VfskQBMAaUZRSVZtWstRtY7hS9nBwX7xos \
+ && pushd QmSGPpRkmsB6VfskQBMAaUZRSVZtWstRtY7hS9nBwX7xos \
+ && tar -xvf *.tgz \
+ && rm *.tgz \
+ && cd * \
+ && sed -i 's/=decline/=accept/' silent.cfg \
+ && ./install.sh -s silent.cfg \
+ && [ -e /etc/alternatives/opencl-libOpenCL.so ] \
+ && popd \
+ && rm -rf QmSGPpRkmsB6VfskQBMAaUZRSVZtWstRtY7hS9nBwX7xos /root/.ipfs
 
 # I'm trying to split up this layer so it's more palatable to download
 RUN apt update \
