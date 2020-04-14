@@ -1,0 +1,17 @@
+FROM brimstone/kali:latest
+
+RUN apt update \
+ && apt install -y --no-install-recommends \
+	john hashcat cpio hydra \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists
+
+RUN wget -O opencl.tgz https://ipfs.io/ipfs/QmeMxXaWYTS88pfJfsB4FPrkB4WAWQip2C8Ke55NMaTvbx \
+ && tar -xvf opencl.tgz \
+ && rm opencl.tgz \
+ && cd l_opencl* \
+ && sed -i 's/=decline/=accept/' silent.cfg \
+ && ./install.sh -s silent.cfg \
+ && [ -e /etc/alternatives/opencl-libOpenCL.so ] \
+ && cd .. \
+ && rm -rf l_opencl*

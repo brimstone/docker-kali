@@ -1,10 +1,51 @@
-FROM brimstone/kali:base
+FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	postgresql \
+	pgadmin3 postgresql xtightvncviewer \
  && apt clean \
  && rm -rf /var/lib/apt/lists
+
+# TODO add empire from https://github.com/BC-SECURITY/Empire
+
+# pupy
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    python-dev python-setuptools swig unzip \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists \
+ && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
+ && rm -rf /pentest/pupy/.git \
+ && cd /pentest/pupy/pupy \
+ && python2 -m easy_install pip \
+ && pip install wheel \
+ && pip install -r requirements.txt \
+ && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
+ && tar xvf payload_templates.txz \
+ && rm payload_templates.txz
+
+RUN mkdir /usr/share/mimikatz \
+ && cd /usr/share/mimikatz \
+ && wget https://github.com/gentilkiwi/mimikatz/releases/latest/download/mimikatz_trunk.zip \
+ && unzip mimikatz_trunk.zip \
+ && rm mimikatz_trunk.zip
+
+RUN wget https://github.com/evilsocket/shellz/releases/download/v1.5.0/shellz_1.5.0_linux_amd64.tar.gz \
+    -O shellz.tar.gz \
+ && tar -xvf shellz.tar.gz shellz \
+ && mv shellz /usr/local/bin/ \
+ && rm shellz.tar.gz
+
+# msf python
+RUN apt update \
+ && apt install -y --no-install-recommends \
+    python3-pip python3-setuptools \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists \
+ && pip3 install pymetasploit3
+
+RUN git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
+ && rm -rf /pentest/msfpayloadgenerator/.git \
 
 # Metasploit Install
 RUN gem install wirble sqlite3 \

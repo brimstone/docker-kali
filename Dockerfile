@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 SHELL ["/bin/bash", "-c"]
 
 ARG BUILD_DATE
@@ -19,82 +19,21 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
  && apt-key add /etc/apt/kali.pub \
  && apt update \
  && apt install -y --no-install-recommends \
-    less vim build-essential libreadline-dev libssl-dev libpq5 \
+    less vim build-essential libssl-dev \
     libpq-dev libreadline5 libsqlite3-dev libpcap-dev \
-    subversion git-core autoconf pgadmin3 curl zlib1g-dev libxml2-dev \
-    libxslt1-dev xtightvncviewer libyaml-dev ruby ruby-dev nmap beef-xss \
-    mitmproxy python-pefile net-tools iputils-ping iptables \
-    sqlmap bettercap rsync enum4linux openssh-client \
-	mfoc mfcuk libnfc-bin hydra nikto weevely netcat-traditional \
-    aircrack-ng cowpatty pciutils kmod wget unicornscan ftp wfuzz \
-    python-pip moreutils upx john file hashcat cpio\
- && apt clean \
- && rm -rf /var/lib/apt/lists
-
-RUN curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuster \
-    -Lo /usr/bin/gobuster \
- && chmod 755 /usr/bin/gobuster
-
-RUN wget -O opencl.tgz https://ipfs.io/ipfs/QmeMxXaWYTS88pfJfsB4FPrkB4WAWQip2C8Ke55NMaTvbx \
- && tar -xvf opencl.tgz \
- && rm opencl.tgz \
- && cd l_opencl* \
- && sed -i 's/=decline/=accept/' silent.cfg \
- && ./install.sh -s silent.cfg \
- && [ -e /etc/alternatives/opencl-libOpenCL.so ] \
- && cd .. \
- && rm -rf l_opencl*
-
-# I'm trying to split up this layer so it's more palatable to download
-RUN apt update \
- && apt install -y --no-install-recommends \
-	burpsuite openjdk-8-jre zaproxy exploitdb \
+    git-core autoconf curl zlib1g-dev libxml2-dev \
+    libxslt1-dev libyaml-dev ruby ruby-dev nmap \
+    python-pefile net-tools iputils-ping iptables \
+    rsync openssh-client \
+	netcat-traditional \
+    pciutils kmod wget ftp \
+    moreutils upx file \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
 RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \
- && git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
- && rm -rf /pentest/msfpayloadgenerator/.git \
- && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh \
- && git clone https://github.com/derv82/wifite /opt/wifite --depth 1 \
- && ln -s /opt/wifite/wifite.py /sbin/wifite
-
-# TODO add empire from https://github.com/BC-SECURITY/Empire
-
-# pupy
-RUN apt update \
- && apt install -y --no-install-recommends \
-    python-dev python-setuptools swig \
- && apt clean \
- && rm -rf /var/lib/apt/lists \
- && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
- && cd /pentest/pupy/pupy \
- && pip install wheel \
- && pip install -r requirements.txt \
- && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
- && tar xvf payload_templates.txz \
- && rm payload_templates.txz
-
-# msf python
-RUN apt update \
- && apt install -y --no-install-recommends \
-    python3-pip python3-setuptools \
- && apt clean \
- && rm -rf /var/lib/apt/lists \
- && pip3 install pymetasploit3
-
-RUN mkdir /usr/share/mimikatz \
- && cd /usr/share/mimikatz \
- && wget https://github.com/gentilkiwi/mimikatz/releases/latest/download/mimikatz_trunk.zip \
- && unzip mimikatz_trunk.zip \
- && rm mimikatz_trunk.zip
-
-RUN wget https://github.com/evilsocket/shellz/releases/download/v1.5.0/shellz_1.5.0_linux_amd64.tar.gz \
-    -O shellz.tar.gz \
- && tar -xvf shellz.tar.gz shellz \
- && mv shellz /usr/local/bin/ \
- && rm shellz.tar.gz
+ && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh
 
 COPY bashrc /root/.bashrc
 
