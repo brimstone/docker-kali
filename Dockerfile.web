@@ -10,3 +10,4 @@ RUN curl https://github.com/brimstone/gobuster/releases/download/1.3-opt/gobuste
     -Lo /usr/bin/gobuster \
  && chmod 755 /usr/bin/gobuster
 
+# TODO /usr/share/beef-xss /usr/share/beef-xss/beef

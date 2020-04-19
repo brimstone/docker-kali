@@ -26,8 +26,8 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     python-pefile net-tools iputils-ping iptables \
     rsync openssh-client \
 	netcat-traditional \
-    pciutils kmod wget ftp \
-    moreutils upx file \
+    pciutils kmod wget ftp exploitdb \
+    moreutils upx file procps \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
