@@ -1,3 +1,5 @@
+FROM alxchk/pupy:unstable as pupy
+
 FROM brimstone/kali:latest
 
 RUN apt update \
@@ -19,10 +21,12 @@ RUN apt update \
  && cd /pentest/pupy/pupy \
  && python2 -m easy_install pip \
  && pip install wheel \
- && pip install -r requirements.txt \
- && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
- && tar xvf payload_templates.txz \
- && rm payload_templates.txz
+ && pip install -r requirements.txt
+# && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
+# && tar xvf payload_templates.txz \
+# && rm payload_templates.txz
+
+COPY --from=pupy /opt/pupy/payload_templates/ /pentest/pupy/pupy/payload_templates/
 
 RUN mkdir /usr/share/mimikatz \
  && cd /usr/share/mimikatz \
