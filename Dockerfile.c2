@@ -21,7 +21,10 @@ RUN apt update \
  && cd /pentest/pupy/pupy \
  && python2 -m easy_install pip \
  && pip install wheel \
- && pip install -r requirements.txt
+ && pip install -r requirements.txt \
+ && sed -i 's/ssl = 443/ssl = 8443/' /pentest/pupy/pupy/pupy.conf.default \
+ && sed -i '/aliases/agenb = gen -O linux -A x64 -f client -o /pentest/share/p connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
+ && sed -i '/aliases/agenso = gen -O linux -A x64 -f client -o /pentest/share/p.so -S connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default
 # && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
 # && tar xvf payload_templates.txz \
 # && rm payload_templates.txz
