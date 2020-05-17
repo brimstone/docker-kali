@@ -24,7 +24,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     git-core autoconf curl zlib1g-dev libxml2-dev \
     libxslt1-dev libyaml-dev ruby ruby-dev nmap \
     python-pefile net-tools iputils-ping iptables \
-    rsync openssh-client \
+    rsync openssh-client sshpass \
 	netcat-traditional \
     pciutils kmod wget ftp exploitdb \
     moreutils upx file procps \
@@ -42,6 +42,9 @@ COPY lists /pentest/lists
 COPY bin/* /usr/local/bin/
 
 COPY share /pentest/share
+
+RUN wget https://www.busybox.net/downloads/binaries/1.31.0-defconfig-multiarch-musl/busybox-x86_64 \
+    -O /pentest/share/busybox
 
 COPY ssh_config /etc/ssh/ssh_config
 

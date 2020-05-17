@@ -6,7 +6,8 @@ RUN apt update \
  && apt install -y --no-install-recommends \
 	pgadmin3 postgresql xtightvncviewer \
  && apt clean \
- && rm -rf /var/lib/apt/lists
+ && rm -rf /var/lib/apt/lists \
+ && mkdir /export
 
 # TODO add empire from https://github.com/BC-SECURITY/Empire
 
@@ -24,7 +25,8 @@ RUN apt update \
  && pip install -r requirements.txt \
  && sed -i 's/ssl = 443/ssl = 8443/' /pentest/pupy/pupy/pupy.conf.default \
  && sed -i '/aliases/agenb = gen -O linux -A x64 -f client -o /pentest/share/p connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
- && sed -i '/aliases/agenso = gen -O linux -A x64 -f client -o /pentest/share/p.so -S connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default
+ && sed -i '/aliases/agenso = gen -O linux -A x64 -f client -o /pentest/share/p.so -S connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
+ && mkdir -p /root/.config/pupy/crypto && ln -s /export/credentials.py /root/.config/pupy/crypto
 # && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
 # && tar xvf payload_templates.txz \
 # && rm payload_templates.txz
