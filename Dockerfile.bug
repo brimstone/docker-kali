@@ -1,0 +1,7 @@
+FROM brimstone/kali:latest
+
+RUN apt update \
+ && apt install -y --no-install-recommends \
+	amass whois ffuf \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists
