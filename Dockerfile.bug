@@ -2,6 +2,6 @@ FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	amass whois ffuf \
+	amass whois ffuf bsdextrautils \
  && apt clean \
  && rm -rf /var/lib/apt/lists
