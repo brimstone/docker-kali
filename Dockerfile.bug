@@ -2,6 +2,17 @@ FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	amass whois ffuf bsdextrautils \
+	amass whois ffuf bsdextrautils python3 python3-pip python3-venv zip unzip \
  && apt clean \
  && rm -rf /var/lib/apt/lists
+
+RUN git clone https://github.com/devanshbatham/ParamSpider \
+ &&	cd ParamSpider \
+ && mv paramspider.py __main__.py \
+ && pip3 install -r requirements.txt --target . \
+ && zip -r paramspider.zip __main__.py core $(awk -F= '{printf $1 " "}' requirements.txt) \
+ && echo '#!/usr/bin/env python3' > /usr/local/bin/paramspider \
+ && cat paramspider.zip >> /usr/local/bin/paramspider \
+ && chmod 755 /usr/local/bin/paramspider \
+ && cd .. \
+ && rm -rf ParamSpider \
