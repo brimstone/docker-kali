@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 SHELL ["/bin/bash", "-c"]
 
 ARG BUILD_DATE
@@ -23,7 +23,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     libpq-dev libreadline5 libsqlite3-dev libpcap-dev \
     git-core autoconf curl zlib1g-dev libxml2-dev \
     libxslt1-dev libyaml-dev ruby ruby-dev nmap \
-    python-pefile net-tools iputils-ping iptables \
+    net-tools iputils-ping iptables \
     rsync openssh-client sshpass \
 	netcat-traditional \
     pciutils kmod wget ftp exploitdb \

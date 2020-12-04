@@ -2,7 +2,8 @@ FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	amass whois ffuf bsdextrautils python3 python3-pip python3-venv zip unzip \
+    amass whois ffuf bsdextrautils python3 python3-pip python3-venv zip unzip \
+    gospider \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
