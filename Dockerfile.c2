@@ -9,7 +9,12 @@ RUN apt update \
  && rm -rf /var/lib/apt/lists \
  && mkdir /export
 
-# TODO add empire from https://github.com/BC-SECURITY/Empire
+# Empire
+RUN apt update \
+ && apt install -y --no-install-recommends \
+	powershell-empire powershell \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists
 
 # pupy
 RUN apt update \
