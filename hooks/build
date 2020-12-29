@@ -6,10 +6,12 @@ set -ueo pipefail
 docker build --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
              --pull -t brimstone/kali:latest .
 
+docker push brimstone/kali:latest
+
 for f in Dockerfile.*; do
 	v="${f##Dockerfile.}"
-	docker build -f "$f" \
+	docker build --pull -f "$f" \
 			-t "brimstone/kali:$v" \
-			. &
+			.
 done
 wait

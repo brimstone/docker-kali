@@ -2,7 +2,7 @@ FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	mitmproxy sqlmap nikto beef-xss bettercap fuff \
+	mitmproxy sqlmap nikto beef-xss bettercap ffuf \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 

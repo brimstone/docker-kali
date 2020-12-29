@@ -3,9 +3,11 @@ FROM brimstone/kali:latest
 RUN apt update \
  && apt install -y --no-install-recommends \
 	john hashcat cpio hydra \
+    ocl-icd-libopencl1 opencl-headers clinfo \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
+# https://software.intel.com/content/www/us/en/develop/articles/opencl-drivers.html
 RUN wget -O opencl.tgz https://ipfs.io/ipfs/QmeMxXaWYTS88pfJfsB4FPrkB4WAWQip2C8Ke55NMaTvbx \
  && tar -xvf opencl.tgz \
  && rm opencl.tgz \

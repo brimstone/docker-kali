@@ -4,7 +4,7 @@ FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	pgadmin3 postgresql xtightvncviewer \
+	postgresql xtightvncviewer \
  && apt clean \
  && rm -rf /var/lib/apt/lists \
  && mkdir /export
@@ -50,6 +50,14 @@ RUN wget https://github.com/evilsocket/shellz/releases/download/v1.5.0/shellz_1.
  && mv shellz /usr/local/bin/ \
  && rm shellz.tar.gz
 
+# PEzor, adds 3GB to image, not worth it right now
+#RUN git clone https://github.com/phra/PEzor.git /pentest/PEzor \
+# && cd /pentest/PEzor \
+# && bash install.sh \
+# && apt clean \
+# && rm -rf /var/lib/apt/lists
+#ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:~/go/bin/:/pentest/PEzor:/pentest/PEzor/deps/donut_v0.9.3/:/pentest/PEzor/deps/wclang/_prefix_PEzor_/bin/
+
 # msf python
 RUN apt update \
  && apt install -y --no-install-recommends \
@@ -59,7 +67,7 @@ RUN apt update \
  && pip3 install pymetasploit3
 
 RUN git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
- && rm -rf /pentest/msfpayloadgenerator/.git \
+ && rm -rf /pentest/msfpayloadgenerator/.git
 
 # Metasploit Install
 RUN gem install wirble sqlite3 \

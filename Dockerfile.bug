@@ -16,4 +16,9 @@ RUN git clone https://github.com/devanshbatham/ParamSpider \
  && cat paramspider.zip >> /usr/local/bin/paramspider \
  && chmod 755 /usr/local/bin/paramspider \
  && cd .. \
- && rm -rf ParamSpider \
+ && rm -rf ParamSpider
+
+# httpx
+# jaeles
+# gsreplace
+# bountyit
