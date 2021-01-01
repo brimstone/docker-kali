@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -z "$STY" ]; then
+	mkdir -p /export/logs
+	screen -x main && exit || screen -wipe
+	screen -S main
+fi

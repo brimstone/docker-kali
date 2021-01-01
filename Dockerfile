@@ -1,5 +1,6 @@
 FROM debian:bullseye
 SHELL ["/bin/bash", "-c"]
+ENTRYPOINT ["/entrypoint"]
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -27,7 +28,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
     rsync openssh-client sshpass \
 	netcat-traditional \
     pciutils kmod wget ftp exploitdb \
-    moreutils upx file procps \
+    moreutils upx file procps screen \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
@@ -35,7 +36,11 @@ RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 
  && rm -rf /pentest/seclists/.git \
  && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh
 
+COPY entrypoint /entrypoint
+
 COPY bashrc /root/.bashrc
+
+COPY screenrc /root/.screenrc
 
 COPY lists /pentest/lists
 

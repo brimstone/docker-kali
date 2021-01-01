@@ -1,0 +1,12 @@
+defshell -bash
+startup_message off
+multiuser on
+defscrollback 10000
+logfile /export/logs/$USER-screenlog.%H.%n.%Y%m%d-%0c:%s.%t.log
+logfile flush 5
+logtstamp on
+deflog on
+defmonitor on
+caption always "%{= dw}%-Lw%{= rk}%50> %n%f* %t %{-}%+Lw%< %= %{= dd} %Hl %{= dd} %0c:%s %{-}"
+defutf8 on
+activity "Activity in %t(%n)"
