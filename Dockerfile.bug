@@ -64,9 +64,7 @@ RUN git clone https://github.com/1ndianl33t/gf-patterns /root/.gf/
 COPY --from=gf /go/src/app/gf/examples/*.json /root/.gf/
 
 COPY --from=jaeles /go/src/app/jaeles/jaeles /usr/local/bin/
-RUN git clone --depth=1 https://github.com/jaeles-project/jaeles-signatures /tmp/jaeles-signatures/ \
- && jaeles config -a reload --signDir /tmp/jaeles-signatures \
- && rm -rf /tmp/jaeles-signatures
+RUN jaeles config init
 
 # bountyit
 # https://github.com/Findomain/Findomain
