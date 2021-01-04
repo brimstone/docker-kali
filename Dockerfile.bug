@@ -1,3 +1,40 @@
+# httpx
+FROM brimstone/golang:latest as httpx
+RUN git clone https://github.com/projectdiscovery/httpx \
+ && cd httpx/cmd/httpx \
+ && go build -v \
+ && pwd
+
+# ureplace instead of qsreplace
+FROM brimstone/golang:latest as ureplace
+RUN git clone https://github.com/theblackturtle/ureplace \
+ && cd ureplace \
+ && go get -v \
+ && go build -v \
+ && pwd
+
+# gf
+FROM brimstone/golang:latest as gf
+RUN git clone https://github.com/tomnomnom/gf \
+ && cd gf \
+ && go build -v \
+ && pwd
+
+# anew
+FROM brimstone/golang:latest as anew
+RUN git clone https://github.com/tomnomnom/anew \
+ && cd anew \
+ && go build -v \
+ && pwd
+
+
+# jaeles
+FROM brimstone/golang:latest as jaeles
+RUN git clone https://github.com/jaeles-project/jaeles \
+ && cd jaeles \
+ && go build -v \
+ && pwd
+
 FROM brimstone/kali:latest
 
 RUN apt update \
@@ -18,11 +55,18 @@ RUN git clone https://github.com/devanshbatham/ParamSpider \
  && cd .. \
  && rm -rf ParamSpider
 
-# httpx
-# jaeles
-# gsreplace / https://github.com/theblackturtle/ureplace
-# getallurls
-# https://github.com/tomnomnom/waybackurls
+COPY --from=httpx /go/src/app/httpx/cmd/httpx/httpx /usr/local/bin/
+COPY --from=ureplace /go/src/app/ureplace/ureplace /usr/local/bin/
+COPY --from=anew /go/src/app/anew/anew /usr/local/bin/
+
+COPY --from=gf /go/src/app/gf/gf /usr/local/bin/
+RUN git clone https://github.com/1ndianl33t/gf-patterns /root/.gf/
+COPY --from=gf /go/src/app/gf/examples/*.json /root/.gf/
+
+COPY --from=jaeles /go/src/app/jaeles/jaeles /usr/local/bin/
+RUN git clone --depth=1 https://github.com/jaeles-project/jaeles-signatures /tmp/jaeles-signatures/ \
+ && jaeles config -a reload --signDir /tmp/jaeles-signatures \
+ && rm -rf /tmp/jaeles-signatures
+
 # bountyit
 # https://github.com/Findomain/Findomain
-# https://github.com/tomnomnom/gf + https://github.com/1ndianl33t/gf-patterns
