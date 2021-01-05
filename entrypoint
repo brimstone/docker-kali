@@ -1,6 +1,8 @@
 #!/bin/sh
-if [ -z "$STY" ]; then
+if [ -t 2 -a -z "$STY" ]; then
+	echo "starting screen"
 	mkdir -p /export/logs
-	screen -x main && exit || screen -wipe
-	screen -S main
+	screen -x main "$@" && exit || screen -wipe
+	screen -S main "$@"
 fi
+exec "$@"
