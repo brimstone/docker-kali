@@ -30,4 +30,4 @@ urldecode () {
 #curl -A "Mozilla" https://user-agents.net/browsers/chrome -s | grep '/chrome/versions/' -m 1
 alias nmap='nmap -g53 --randomize-hosts --script-args http.useragent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.0 Safari/537.36"'
 alias scan='nmap -vv -O -sV --script=vuln,default -vv -p- ' # -oA path hosts
-PS1='\D{%%H:%M:%S}:\w\$ '
+PS1='\D{%H:%M:%S}:\w\$ '
