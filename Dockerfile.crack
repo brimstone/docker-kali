@@ -8,12 +8,12 @@ RUN apt update \
  && rm -rf /var/lib/apt/lists
 
 # https://software.intel.com/content/www/us/en/develop/articles/opencl-drivers.html
-RUN wget -O opencl.tgz https://ipfs.io/ipfs/QmeMxXaWYTS88pfJfsB4FPrkB4WAWQip2C8Ke55NMaTvbx \
- && tar -xvf opencl.tgz \
- && rm opencl.tgz \
- && cd l_opencl* \
- && sed -i 's/=decline/=accept/' silent.cfg \
- && ./install.sh -s silent.cfg \
- && [ -e /etc/alternatives/opencl-libOpenCL.so ] \
- && cd .. \
- && rm -rf l_opencl*
+#RUN wget -O opencl.tgz https://ipfs.io/ipfs/QmeMxXaWYTS88pfJfsB4FPrkB4WAWQip2C8Ke55NMaTvbx \
+# && tar -xvf opencl.tgz \
+# && rm opencl.tgz \
+# && cd l_opencl* \
+# && sed -i 's/=decline/=accept/' silent.cfg \
+# && ./install.sh -s silent.cfg \
+# && [ -e /etc/alternatives/opencl-libOpenCL.so ] \
+# && cd .. \
+# && rm -rf l_opencl*
