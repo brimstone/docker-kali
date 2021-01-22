@@ -32,7 +32,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
-RUN git clone https://github.com/brimstone/SecLists /pentest/seclists --depth 1 \
+RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
  && rm -rf /pentest/seclists/.git \
  && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh
 
