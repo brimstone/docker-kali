@@ -40,7 +40,7 @@ FROM brimstone/kali:latest
 RUN apt update \
  && apt install -y --no-install-recommends \
     amass whois ffuf bsdextrautils python3 python3-pip python3-venv zip unzip \
-    gospider proxychains4 getallurls sqlmap \
+    gobuster gospider proxychains4 getallurls sqlmap \
  && apt clean \
  && rm -rf /var/lib/apt/lists
 
