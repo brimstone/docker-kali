@@ -21,7 +21,7 @@ RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
  && apt update \
  && apt install -y --no-install-recommends \
     less vim build-essential libssl-dev \
-    libpq-dev libreadline5 libsqlite3-dev libpcap-dev \
+    libpq-dev readline-common libsqlite3-dev libpcap-dev \
     git-core autoconf curl zlib1g-dev libxml2-dev \
     libxslt1-dev libyaml-dev ruby ruby-dev nmap \
     net-tools iputils-ping iptables \
