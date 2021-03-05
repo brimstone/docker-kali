@@ -1,4 +1,4 @@
-FROM alxchk/pupy:unstable as pupy
+#FROM alxchk/pupy:unstable as pupy
 
 FROM brimstone/kali:latest
 
@@ -17,26 +17,26 @@ RUN apt update \
  && rm -rf /var/lib/apt/lists
 
 # pupy
-RUN apt update \
- && apt install -y --no-install-recommends \
-    python-dev python-setuptools swig unzip \
- && apt clean \
- && rm -rf /var/lib/apt/lists \
- && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
- && rm -rf /pentest/pupy/.git \
- && cd /pentest/pupy/pupy \
- && python2 -m easy_install pip \
- && pip install wheel \
- && pip install -r requirements.txt \
- && sed -i 's/ssl = 443/ssl = 8443/' /pentest/pupy/pupy/pupy.conf.default \
- && sed -i '/aliases/agenb = gen -O linux -A x64 -f client -o /pentest/share/p connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
- && sed -i '/aliases/agenso = gen -O linux -A x64 -f client -o /pentest/share/p.so -S connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
- && mkdir -p /root/.config/pupy/crypto && ln -s /export/credentials.py /root/.config/pupy/crypto
-# && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
-# && tar xvf payload_templates.txz \
-# && rm payload_templates.txz
+#RUN apt update \
+# && apt install -y --no-install-recommends \
+#    python-dev python-setuptools swig unzip \
+# && apt clean \
+# && rm -rf /var/lib/apt/lists \
+# && git clone --recursive https://github.com/n1nj4sec/pupy /pentest/pupy \
+# && rm -rf /pentest/pupy/.git \
+# && cd /pentest/pupy/pupy \
+# && python2 -m easy_install pip \
+# && pip install wheel \
+# && pip install -r requirements.txt \
+# && sed -i 's/ssl = 443/ssl = 8443/' /pentest/pupy/pupy/pupy.conf.default \
+# && sed -i '/aliases/agenb = gen -O linux -A x64 -f client -o /pentest/share/p connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
+# && sed -i '/aliases/agenso = gen -O linux -A x64 -f client -o /pentest/share/p.so -S connect -t ssl --host' /pentest/pupy/pupy/pupy.conf.default \
+# && mkdir -p /root/.config/pupy/crypto && ln -s /export/credentials.py /root/.config/pupy/crypto
+## && wget https://github.com/n1nj4sec/pupy/releases/download/latest/payload_templates.txz \
+## && tar xvf payload_templates.txz \
+## && rm payload_templates.txz
 
-COPY --from=pupy /opt/pupy/payload_templates/ /pentest/pupy/pupy/payload_templates/
+#COPY --from=pupy /opt/pupy/payload_templates/ /pentest/pupy/pupy/payload_templates/
 
 RUN mkdir /usr/share/mimikatz \
  && cd /usr/share/mimikatz \
