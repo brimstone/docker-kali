@@ -16,6 +16,7 @@ RUN git clone https://github.com/projectdiscovery/subfinder \
 FROM brimstone/golang:latest as ureplace
 RUN git clone https://github.com/theblackturtle/ureplace \
  && cd ureplace \
+ && go mod init \
  && go get -v \
  && go build -v \
  && pwd
@@ -24,6 +25,7 @@ RUN git clone https://github.com/theblackturtle/ureplace \
 FROM brimstone/golang:latest as gf
 RUN git clone https://github.com/tomnomnom/gf \
  && cd gf \
+ && go mod init \
  && go build -v \
  && pwd
 
@@ -31,9 +33,9 @@ RUN git clone https://github.com/tomnomnom/gf \
 FROM brimstone/golang:latest as anew
 RUN git clone https://github.com/tomnomnom/anew \
  && cd anew \
+ && go mod init \
  && go build -v \
  && pwd
-
 
 # jaeles
 FROM brimstone/golang:latest as jaeles
