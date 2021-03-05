@@ -5,44 +5,11 @@ ENTRYPOINT ["/entrypoint"]
 ARG BUILD_DATE
 ARG VCS_REF
 
-RUN apt update \
- && apt install -y --no-install-recommends \
-	gnupg2 dirmngr \
- && apt clean \
- && rm -rf /var/lib/apt/lists
+COPY provision /usr/local/bin/provision
 
-COPY kali.pub /etc/apt/kali.pub
-
-RUN echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
-    > /etc/apt/sources.list.d/kali.list \
- && echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" \
-    >> /etc/apt/sources.list.d/kali.list \
- && apt-key add /etc/apt/kali.pub \
- && apt update \
- && apt install -y --no-install-recommends \
-    less vim build-essential libssl-dev \
-    libpq-dev readline-common libsqlite3-dev libpcap-dev \
-    git-core autoconf curl zlib1g-dev libxml2-dev \
-    libxslt1-dev libyaml-dev ruby ruby-dev nmap \
-    net-tools iputils-ping iptables \
-    rsync openssh-client sshpass \
-	netcat-traditional \
-    pciutils kmod wget ftp exploitdb \
-    moreutils upx file procps screen \
- && apt clean \
- && rm -rf /var/lib/apt/lists
-
-RUN git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1 \
- && rm -rf /pentest/seclists/.git \
- && wget https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh -O /bin/netcatup.sh
+RUN /usr/local/bin/provision base
 
 COPY entrypoint /entrypoint
-
-COPY bashrc /root/.bashrc
-
-COPY screenrc /root/.screenrc
-
-COPY lists /pentest/lists
 
 COPY bin/* /usr/local/bin/
 

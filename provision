@@ -1,0 +1,114 @@
+#!/bin/bash
+set -euo pipefail
+
+package(){
+	packages=($(
+	for p in $@; do
+		if ! dpkg -L "$p" >/dev/null 2>/dev/null; then
+			echo "$p"
+		fi
+	done
+	))
+	if [ -n "${packages[*]}" ]; then
+		[ -t 2 ] && echo "Need to install: ${packages[*]}"
+		apt update
+		apt install -y --no-install-recommends ${packages[@]}
+		apt clean
+		rm -rf /var/lib/apt/lists
+	fi
+}
+
+base(){
+	package gnupg2 dirmngr wget ca-certificates
+
+	dpkg -L kali-archive-keyring 2>/dev/null || (
+		cd /tmp
+		wget https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2020.2_all.deb
+		dpkg -i kali-archive-keyring*.deb
+		rm kali-archive-keyring*.deb
+	)
+
+	echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" \
+	    > /etc/apt/sources.list.d/kali.list
+	echo "deb-src http://http.kali.org/kali kali-rolling main contrib non-free" \
+	    >> /etc/apt/sources.list.d/kali.list
+	package \
+	    less vim build-essential libssl-dev \
+	    libpq-dev readline-common libsqlite3-dev libpcap-dev \
+	    git autoconf curl zlib1g-dev libxml2-dev \
+	    libxslt1-dev libyaml-dev ruby ruby-dev nmap \
+	    net-tools iputils-ping iptables \
+	    rsync openssh-client sshpass \
+		netcat-traditional \
+	    pciutils kmod ftp exploitdb \
+	    moreutils upx-ucl file procps screen
+
+	mkdir -p /pentest
+
+	if [ ! -d /pentest/seclists ]; then
+		git clone https://github.com/danielmiessler/SecLists /pentest/seclists --depth 1
+		rm -rf /pentest/seclists/.git
+	fi
+
+	# Unused https://github.com/Charliedean/NetcatUP/raw/master/netcatup.sh
+
+	cat << "EOF" > /root/.bashrc
+if [ ! -e /root/.ssh/auth.sock ]; then
+	eval $(ssh-agent -s) >/dev/null
+	ln -s $SSH_AUTH_SOCK "/root/.ssh/auth.sock"
+	echo $SSH_AGENT_PID > "/root/.ssh/auth.pid"
+else
+	export SSH_AUTH_SOCK=/root/.ssh/auth.sock
+	export SSH_AGENT_PID="$(< "/root/.ssh/auth.pid")"
+fi
+
+urlencode () {
+        old_lc_collate=$LC_COLLATE
+        LC_COLLATE=C
+        local length="${#1}"
+        for ((i = 0; i < length; i++ )) do
+                local c="${1:$i:1}"
+                case $c in
+                        ([a-zA-Z0-9.~_-]) printf "$c" ;;
+                        (*) printf '%%%02X' "'$c" ;;
+                esac
+        done
+        LC_COLLATE=$old_lc_collate
+}
+
+urldecode () {
+        local url_encoded="${1//+/ }"
+        printf '%b' "${url_encoded//\%/\\x}"
+}
+
+#TODO make this work:
+#curl -A "Mozilla" https://user-agents.net/browsers/chrome -s | grep '/chrome/versions/' -m 1
+alias nmap='nmap -g53 --randomize-hosts --script-args http.useragent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.0 Safari/537.36"'
+alias scan='nmap -vv -O -sV --script=vuln,default -vv -p- ' # -oA path hosts
+PS1='\D{%H:%M:%S}:\w\$ '
+EOF
+
+	cat << "EOF" > /root/.screenrc
+defshell -bash
+startup_message off
+multiuser on
+defscrollback 10000
+logfile /export/logs/$USER-screenlog.%H.%n.%Y%m%d-%0c:%s.%t.log
+logfile flush 5
+logtstamp on
+deflog on
+defmonitor on
+caption always "%{= dw}%-Lw%{= rk}%50> %n%f* %t %{-}%+Lw%< %= %{= dd} %Hl %{= dd} %0c:%s %{-}"
+defutf8 on
+activity "Activity in %t(%n)"
+EOF
+
+
+}
+
+if [ -z "${1:-}" ]; then
+	echo "Type of system must be specified. Choices are: base"
+	exit 1
+fi
+
+${1}
