@@ -12,6 +12,14 @@ RUN git clone https://github.com/projectdiscovery/subfinder \
  && go build -v \
  && pwd
 
+# nuclei
+FROM brimstone/golang:latest as nuclei
+RUN git clone https://github.com/projectdiscovery/nuclei \
+ && cd nuclei/v2/cmd/nuclei \
+ && go get -v \
+ && go build -v \
+ && pwd
+
 # ureplace instead of qsreplace
 FROM brimstone/golang:latest as ureplace
 RUN git clone https://github.com/theblackturtle/ureplace \
@@ -66,6 +74,7 @@ RUN git clone https://github.com/devanshbatham/ParamSpider \
 
 COPY --from=httpx /go/src/app/httpx/cmd/httpx/httpx /usr/local/bin/
 COPY --from=subfinder /go/src/app/subfinder/v2/cmd/subfinder/subfinder /usr/local/bin/
+COPY --from=nuclei /go/src/app/nuclei/v2/cmd/nuclei/nuclei /usr/local/bin/
 COPY --from=ureplace /go/src/app/ureplace/ureplace /usr/local/bin/
 COPY --from=anew /go/src/app/anew/anew /usr/local/bin/
 
