@@ -52,6 +52,12 @@ RUN git clone https://github.com/jaeles-project/jaeles \
  && go build -v \
  && pwd
 
+FROM brimstone/golang:latest as ipinfo
+RUN git clone https://github.com/ipinfo/cli ipinfo \
+ && cd ipinfo/ipinfo \
+ && go build -v \
+ && pwd
+
 FROM brimstone/kali:latest
 
 RUN apt update \
@@ -85,5 +91,6 @@ COPY --from=gf /go/src/app/gf/examples/*.json /root/.gf/
 COPY --from=jaeles /go/src/app/jaeles/jaeles /usr/local/bin/
 RUN jaeles config init
 
+COPY --from=ipinfo /go/src/app/cli/ipinfo/ipinfo /usr/local/bin/
 # bountyit
 # https://github.com/Findomain/Findomain
