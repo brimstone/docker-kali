@@ -91,6 +91,6 @@ COPY --from=gf /go/src/app/gf/examples/*.json /root/.gf/
 COPY --from=jaeles /go/src/app/jaeles/jaeles /usr/local/bin/
 RUN jaeles config init
 
-COPY --from=ipinfo /go/src/app/cli/ipinfo/ipinfo /usr/local/bin/
+COPY --from=ipinfo /go/src/app/ipinfo/ipinfo /usr/local/bin/
 # bountyit
 # https://github.com/Findomain/Findomain
