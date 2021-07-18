@@ -4,7 +4,7 @@ FROM brimstone/kali:latest
 
 RUN apt update \
  && apt install -y --no-install-recommends \
-	postgresql xtightvncviewer unzip \
+	postgresql xtightvncviewer unzip impacket-scripts \
  && apt clean \
  && rm -rf /var/lib/apt/lists \
  && mkdir /export
