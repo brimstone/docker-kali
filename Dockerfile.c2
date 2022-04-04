@@ -84,6 +84,7 @@ ENV LHOST= \
 # Update metasploit the hard way, using git master
 # Stolen from https://github.com/hackerhouse-opensource/hacklab/blob/master/Dockerfile
 RUN git clone https://github.com/rapid7/metasploit-framework \
+ && gem install xmlrpc \
  && cd metasploit-framework \
  && bundle install
 
