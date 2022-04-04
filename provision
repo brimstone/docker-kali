@@ -23,7 +23,7 @@ base(){
 
 	dpkg -L kali-archive-keyring 2>/dev/null || (
 		cd /tmp
-		wget https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2020.2_all.deb
+		wget https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2022.1_all.deb
 		dpkg -i kali-archive-keyring*.deb
 		rm kali-archive-keyring*.deb
 	)
