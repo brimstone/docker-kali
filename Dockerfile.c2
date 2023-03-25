@@ -64,7 +64,7 @@ RUN apt update \
     python3-pip python3-setuptools \
  && apt clean \
  && rm -rf /var/lib/apt/lists \
- && pip3 install pymetasploit3
+ && pip3 install --break-system-packages pymetasploit3
 
 RUN git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloadgenerator --depth 1 \
  && rm -rf /pentest/msfpayloadgenerator/.git
@@ -73,7 +73,7 @@ RUN git clone https://github.com/FireFart/msfpayloadgenerator /pentest/msfpayloa
 RUN gem install wirble sqlite3 \
  && gem install bundler -v 1.16.1
 
-RUN sed -i 's/md5$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
+RUN sed -i 's/scram-sha-256$/trust/g' /etc/postgresql/*/main/pg_hba.conf \
  && /etc/init.d/postgresql start \
  && su -c "createuser msf -S -R -D \
  && createdb -O msf msf" postgres
